@@ -25,6 +25,14 @@ plot(trend+add_p)
 plot(trend*mult_p)
 
 
+for (i in 1:8) {
+  series = ts(matriz[,i],frequency = 12)
+  holt = HoltWinters(series)
+  p = predict(holt,48)
+  predição[,i] = p
+  fct = forecast(holt)
+  erro[,i] = fct$residuals #subtração
+}
 
 
 
