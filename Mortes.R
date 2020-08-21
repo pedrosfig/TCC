@@ -6,6 +6,9 @@ mortes <- datasets::USAccDeaths
 plot(mortes)
 length(mortes)
 
+fit <- auto.arima(mortes)
+fit
+
 #teste inicial
 hw_mortes <- HoltWinters(mortes)
 plot(hw_mortes)

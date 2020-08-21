@@ -8,16 +8,16 @@ require(latex)
 #####Period#####
 mult_p = rep(NA,60)
 for (i in 1:60){mult_p[i] = cos(pi*i/6)}
-plot(mult_p,type='l')
+ts.plot(mult_p)
 
 add_p = rep(NA,60)
 for (i in 1:60){add_p[i] = cos(pi*i/6)*2500}
-plot(add_p,type='l')
+ts.plot(add_p)
 
 ######Trend######
 trend = rep(NA,60)
 for (i in 1:60){trend[i]=400*i}
-plot(trend,type = 'l')
+ts.plot(trend)
 
 windows()
 par(mfrow = c(1,2))
@@ -46,6 +46,18 @@ ht_add
 # ?Arima()
 # Arima()
 
+?auto.arima()
+fit_add <- auto.arima(serie_add)
+fit_add
+
+fit_mult <- auto.arima(serie_mult)
+fit_mult
 
 
+?auto.ssarima()
+fit_add_s <- auto.ssarima(serie_add)
+fit_add_s
+
+fit_mult_s <- auto.ssarima(serie_mult)
+fit_mult_s
 
