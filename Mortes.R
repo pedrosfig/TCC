@@ -1,5 +1,8 @@
 library(datasets)
 library(forecast)
+library(stats)
+trend.test(mortes)
+
 
 ?USAccDeaths
 mortes <- datasets::USAccDeaths
@@ -34,7 +37,7 @@ lines(predict(hw_mortes_treino, 24), col="red")
 lines(predict(arima_mortes_treino,24)$pred,col = 'blue')
 legend("top", inset=.05,
        c("Prevista","Real"), lwd=1, lty=1, col=c("red","black")) 
-#FYI: nesse caso o arima ganhou, 
+#FYI: nesse caso o arima ganhou 
 
 
 
