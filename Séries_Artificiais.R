@@ -21,8 +21,8 @@ ts.plot(trend)
 
 windows()
 par(mfrow = c(1,2))
-plot(trend+add_p)
-plot(trend*mult_p)
+ts.plot(trend+add_p)
+ts.plot(trend*(1+mult_p))
 
 
 # for (i in 1:8) {
@@ -34,14 +34,16 @@ plot(trend*mult_p)
 #   erro[,i] = fct$residuals #subtração
 # }
 
-serie_add = trend+add_p
-serie_mult = trend*mult_p
+serie_add = ts(trend+add_p,frequency= 12)
+serie_mult = ts(trend*(1+mult_p+0.1),frequency=12) #nao podemos zerar os dados pra usar o fator mult
 
 
 ?HoltWinters()
 # ht_add <- HoltWinters(serie_add, alpha=0.3, beta = FALSE, gamma = FALSE, seasonal = "additive")
-ht_add <- HoltWinters(serie_add, seasonal = "additive")
-ht_add
+ht_add <- HoltWinters(serie_mult, optim.start = c(alpha = 0.3, beta = 0.1, gamma = 0.1),seasonal = "multiplicative")
+ts.plot(ht_add$fitted[,1])
+lines(serie_mult,col = 'green')
+plot(decompose(serie_add))
 
 # ?Arima()
 # Arima()
