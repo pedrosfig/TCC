@@ -5,7 +5,7 @@ library(pastecs)
 
 ?USAccDeaths
 mortes <- datasets::USAccDeaths
-plot(mortes)
+ts.plot(mortes)
 length(mortes)
 trend.test(mortes)
 
@@ -84,3 +84,9 @@ legend("top", inset=.05,
 sum(predict(hw_cross, 12) - mortes_teste)^2/var(mortes)
 sum(predict(hw_mortes_treino, 12) - mortes_teste)^2/var(mortes)
 sum(predict(arima_mortes_treino,12)$pred - mortes_teste)^2/var(mortes)
+
+
+
+
+
+
