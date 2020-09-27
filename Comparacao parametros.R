@@ -17,36 +17,32 @@ mortes_teste
 
 # Cross-Validation
 
-a = 0.1
-b = 0.1
-c = 0.1
+niveis <- seq(from=0.1, to=1, by=0.1)
+n <- length(niveis)
 STE_menor = 10^100
 
-
-for(i in 1:9){
-  b <- 0.1
-  for(j in 1:9){
-    c <- 0.1
-    for(k in 1:9){
+for(i in 1:n){
+  a <- niveis[i]
+  for(j in 1:n){
+    b <- niveis[j]
+    for(k in 1:n){
+      c <- niveis[k]
       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-      STE <- sum(predict(hw_cross, 12) - mortes_teste)^2
+      STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
       if(STE < STE_menor){
         STE_menor <- STE
         A <- a
         B <- b
         C <- c
       }
-      c <- c + 0.1
     }
-    b <- b + 0.1
   }
-  a = a + 0.1
 }
 
 STE_menor
-A  #0.5
-B  #0.3
-C  #0.3
+A  #0.1
+B  #0.5
+C  #0.5
 
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
@@ -165,8 +161,81 @@ legend("top", inset=.05,
 
 
 
+# Cross Validation Errors
+
+niveis <- seq(from=0.01, to=1, by=0.01)
+n <- length(niveis)
+
+# Alpha
+
+error_a <- rep(0, n)
+
+for(i in 1:n){
+  a <- niveis[i]
+  hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=B, gamma=C, seasonal = "add")
+  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+  error_a[i] <- STE
+  
+}
+
+# error_a
+plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE")
+legend("top",lty=0, c("Beta = B = 0.5", "Gamma = C = 0.5"),lwd=1, bty="n")
 
 
 
 
+# Beta
+
+error_b <- rep(0, n)
+
+for(i in 1:n){
+  b <- niveis[i]
+  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=b, gamma=C, seasonal = "add")
+  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+  error_b[i] <- STE
+  
+}
+
+# error_b
+plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "SSE")
+legend("top",lty=0, c("Alpha = A = 0.1", "Gamma = C = 0.5"),lwd=1, bty="n")
+
+
+
+
+# Gamma Aditivo
+
+error_c_add <- rep(0, n)
+
+for(i in 1:n){
+  c <- niveis[i]
+  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "add")
+  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+  error_c_add[i] <- STE
+  
+}
+
+# error_c_add
+plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "SSE")
+legend("top",lty=0, c("Alpha = A = 0.1", "Beta = B = 0.5"),lwd=1, bty="n")
+
+
+
+
+# Gamma Multiplicativo
+
+error_c_mult <- rep(0, n)
+
+for(i in 1:n){
+  c <- niveis[i]
+  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
+  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+  error_c_mult[i] <- STE
+  
+}
+
+# error_c_mult
+plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "SSE")
+legend("top",lty=0, c("Alpha = A = 0.1", "Beta = B = 0.5"),lwd=1, bty="n")
 
