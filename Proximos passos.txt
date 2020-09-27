@@ -1,0 +1,17 @@
+Fazer:
+
+# Fazer o arima sem o usar a função Auto.arima, mas por conta propria
+# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito 
+# comparar arima com Hw no de carros
+# explorar situações q tenham alfa menor pra ferrar o Arima
+
+# No caso das mortes o Arima ficou melhor, no carro provavelmente HW deve ficar melhor
+
+
+
+Feito:
+
+# Plotar grafico com os resultados, com o valor dos erros. 
+
+
+
