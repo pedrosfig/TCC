@@ -17,27 +17,27 @@ mortes_teste
 
 # Cross-Validation
 
-niveis <- seq(from=0.01, to=1, by=0.01)
-n <- length(niveis)
-STE_menor = 10^100
-
-for(i in 1:n){
-  a <- niveis[i]
-  for(j in 1:n){
-    b <- niveis[j]
-    for(k in 1:n){
-      c <- niveis[k]
-      hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-      STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-      if(STE < STE_menor){
-        STE_menor <- STE
-        A <- a
-        B <- b
-        C <- c
-      }
-    }
-  }
-}
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# STE_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   for(j in 1:n){
+#     b <- niveis[j]
+#     for(k in 1:n){
+#       c <- niveis[k]
+#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
+#       STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+#       if(STE < STE_menor){
+#         STE_menor <- STE
+#         A <- a
+#         B <- b
+#         C <- c
+#       }
+#     }
+#   }
+# }
 
 STE_menor
 # step:  0.1  |  0.05  |  0.01
@@ -45,6 +45,9 @@ A      # 0.1  |  0.1   |  0.02
 B      # 0.5  |  0.85  |  0.65
 C      # 0.5  |  0.25  |  0.35
 
+A <- 0.02
+B <- 0.65
+C <- 0.35
 
 hw_cross_add <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
 hw_cross_mult <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")

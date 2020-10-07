@@ -4,6 +4,7 @@ Fazer:
 # Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito 
 # comparar arima com Hw no de carros
 # explorar situações q tenham alfa menor pra ferrar o Arima
+# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima
 
 # No caso das mortes o Arima ficou melhor, no carro provavelmente HW deve ficar melhor
 
