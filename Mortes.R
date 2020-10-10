@@ -31,7 +31,27 @@ hw_mortes_treino
 arima_mortes_treino <- auto.arima(mortes_treino)
 arima_mortes_treino
 
+serie_diff=ts(diff(mortes_treino,lag = 1))
+acf(serie_diff,xlim = c(0,20))
+pacf(serie_diff,xlim = c(0,20))
 
+serie_diff12 = diff(serie_diff, lag = 12)
+acf(serie_diff12,xlim = c(0,20))
+pacf(serie_diff12,xlim = c(0,20))
+
+aj1 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12))
+aj2 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,0,0),period = 12))
+aj3 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,1),period = 12))
+aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))
+
+AICs = rbind(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
+BICs = rbind(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
+cbind(AICs,BICs)
+
+#podemos ver que o ajuste com menores erros é o 4
+
+#Para a primeira parte do Arima, podemos ver que o acf quebra 
+x[0]
 plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
 lines(predict(hw_mortes_treino, 24), col="red", lty=2)
 lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
@@ -86,9 +106,9 @@ SSE_arima_auto <- sum((predict(arima_mortes_treino, 24)$pred - mortes_teste)^2) 
 SSE_HW_auto <- sum((predict(hw_mortes_treino, 24) - mortes_teste)^2)             # HW automatico
 
 
-{plot(c(SSE_HW_CV, SSE_arima_auto, SSE_HW_auto), col=c("blue","red","dark orange"), type = "p", main = "Test Error", ylab="SSE")
+{plot(c(SSE_HW_CV, SSE_arima_auto, SSE_HW_auto), col=c("green","gray","red"), type = "p", main = "Test Error", ylab="SSE")
 legend("top", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
-       col=c("blue","red","dark orange")) 
+       col=c("green","gray","red")) 
 }
 segments(x0=1, y0=SSE_HW_CV, x1=2, y1=SSE_arima_auto, lty=3)
 segments(x0=2, y0=SSE_arima_auto, x1=3, y1=SSE_HW_auto, lty=3)

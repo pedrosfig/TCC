@@ -1,8 +1,8 @@
 Fazer:
 
-# Fazer o arima sem o usar a função Auto.arima, mas por conta propria
-# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito 
-# comparar arima com Hw no de carros
+# comparar arima com Hw no de carros.
+# Fazer o arima sem o usar a função Auto.arima, mas por conta propria. Feito, falta explicar direitnho a logica usada
+# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito. Falta explicarmos os efeitos e interpretar. 
 # explorar situações q tenham alfa menor pra ferrar o Arima
 # Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima
 
