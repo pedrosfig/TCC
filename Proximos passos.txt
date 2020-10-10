@@ -6,7 +6,7 @@ Fazer:
 # explorar situações q tenham alfa menor pra ferrar o Arima
 # Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima
 
-# No caso das mortes o Arima ficou melhor, no carro provavelmente HW deve ficar melhor
+# No caso das mortes o Arima ficou melhor que o HW automatico, no carro provavelmente HW deve ficar melhor
 
 
 

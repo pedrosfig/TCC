@@ -39,11 +39,11 @@ mortes_teste
 #   }
 # }
 
-STE_menor
-# step:  0.1  |  0.05  |  0.01
-A      # 0.1  |  0.1   |  0.02
-B      # 0.5  |  0.85  |  0.65
-C      # 0.5  |  0.25  |  0.35
+# STE_menor
+# # step:  0.1  |  0.05  |  0.01
+# A      # 0.1  |  0.1   |  0.02
+# B      # 0.5  |  0.85  |  0.65
+# C      # 0.5  |  0.25  |  0.35
 
 A <- 0.02
 B <- 0.65
@@ -190,7 +190,7 @@ min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
 
 {plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE")
-legend("top",lty=0, c("Beta = B = 0.5", "Gamma = C = 0.5"),lwd=1, bty="n")
+legend("top",lty=0, c("Beta = B = 0.65", "Gamma = C = 0.35"),lwd=1, bty="n")
 }
 
 
@@ -210,7 +210,7 @@ for(i in 1:n){
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
 {plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.1", "Gamma = C = 0.5"),lwd=1, bty="n")
+legend("top",lty=0, c("Alpha = A = 0.02", "Gamma = C = 0.35"),lwd=1, bty="n")
 }
 
 
@@ -230,7 +230,7 @@ for(i in 1:n){
 min(error_c_add)                # erro minimo
 niveis[which.min(error_c_add)]  # valor que leva a esse erro
 {plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.1", "Beta = B = 0.5"),lwd=1, bty="n")
+legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
 }
 
 
@@ -250,7 +250,7 @@ for(i in 1:n){
 min(error_c_mult)                # erro minimo
 niveis[which.min(error_c_mult)]  # valor que leva a esse erro
 {plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.1", "Beta = B = 0.5"),lwd=1, bty="n")
+legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
 }
 
 

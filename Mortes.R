@@ -28,7 +28,7 @@ mortes_teste
 hw_mortes_treino <- HoltWinters(mortes_treino, seasonal = "add")  #a=0.78 b=0 c=0.43
 hw_mortes_treino
 
-arima_mortes_treino <- auto.arima(mortes_treino)
+arima_mortes_treino <- auto.arima(mortes_treino)    # ARIMA(0,1,1)(1,1,0)[12]
 arima_mortes_treino
 
 serie_diff=ts(diff(mortes_treino,lag = 1))
@@ -42,13 +42,19 @@ pacf(serie_diff12,xlim = c(0,20))
 aj1 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12))
 aj2 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,0,0),period = 12))
 aj3 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,1),period = 12))
-aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))
+aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))  # igual ao auto.arima
 
-AICs = rbind(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
-BICs = rbind(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
-cbind(AICs,BICs)
+SSE_aj1 <- sum((predict(aj1, 24)$pred - mortes_teste)^2)
+SSE_aj2 <- sum((predict(aj2, 24)$pred - mortes_teste)^2)
+SSE_aj3 <- sum((predict(aj3, 24)$pred - mortes_teste)^2)
+SSE_aj4 <- sum((predict(aj4, 24)$pred - mortes_teste)^2)
 
-#podemos ver que o ajuste com menores erros é o 4
+AICs = c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
+BICs = c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
+SSEs <- c(SSE_aj1,SSE_aj2,SSE_aj3,SSE_aj4)
+cbind(AICs,BICs,SSEs)
+
+#podemos ver que o ajuste com menores erros é o 4 (auto.arima)
 
 #Para a primeira parte do Arima, podemos ver que o acf quebra 
 x[0]
@@ -56,50 +62,53 @@ plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
 lines(predict(hw_mortes_treino, 24), col="red", lty=2)
 lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
 legend("top", inset=.05,
-       c("Real","HW", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue")) 
+       c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue")) 
 #FYI: nesse caso o arima ganhou 
 
 
 
 # Cross-Validation
 
-a = 0.1
-b = 0.1
-c = 0.1
-STE_menor = 10^100
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# STE_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   for(j in 1:n){
+#     b <- niveis[j]
+#     for(k in 1:n){
+#       c <- niveis[k]
+#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
+#       STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
+#       if(STE < STE_menor){
+#         STE_menor <- STE
+#         A <- a
+#         B <- b
+#         C <- c
+#       }
+#     }
+#   }
+# }
 
+# STE_menor
+# # step:  0.1  |  0.05  |  0.01
+# A      # 0.1  |  0.1   |  0.02
+# B      # 0.5  |  0.85  |  0.65
+# C      # 0.5  |  0.25  |  0.35
 
-for(i in 1:9){
-  b <- 0.1
-  for(j in 1:9){
-    c <- 0.1
-    for(k in 1:9){
-      hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-      STE <- sum((predict(hw_cross, 24) - mortes_teste)^2)
-      if(STE < STE_menor){
-        STE_menor <- STE
-        A <- a
-        B <- b
-        C <- c
-        }
-      c <- c + 0.1
-    }
-    b <- b + 0.1
-  }
-  a = a + 0.1
-}
+A <- 0.02
+B <- 0.65
+C <- 0.35
 
-STE_menor
-A
-B
-C
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
-plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
+{plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
 lines(predict(hw_cross, 24), col="red", lty=2)
 lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
 legend("top", inset=.05,
        c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue")) 
+}
 
 SSE_HW_CV <- sum((predict(hw_cross, 24) - mortes_teste)^2)                       # HW Cross-Validation
 SSE_arima_auto <- sum((predict(arima_mortes_treino, 24)$pred - mortes_teste)^2)  # ARIMA automatico
