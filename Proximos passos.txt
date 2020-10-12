@@ -1,6 +1,6 @@
 Fazer:
 
-# Carros: comparar ARIMA com HW (CV)
+# Carros: ARIMA
 # explorar situações q tenham alfa menor pra ferrar o Arima
 # Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final)
 
