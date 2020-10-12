@@ -1,18 +1,23 @@
 Fazer:
 
-# comparar arima com Hw no de carros.
-# Fazer o arima sem o usar a função Auto.arima, mas por conta propria. Feito, falta explicar direitnho a logica usada
-# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito. Falta explicarmos os efeitos e interpretar. 
+# Carros: comparar ARIMA com HW (CV)
 # explorar situações q tenham alfa menor pra ferrar o Arima
-# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima
+# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final)
 
-# No caso das mortes o Arima ficou melhor que o HW automatico, no carro provavelmente HW deve ficar melhor
+# Mostrar tudo pra Kelly
 
+# LaTeX: explicar HoltWinters
+# LaTeX: explicar SARIMA
+# LaTeX: explicar dados
+# LaTeX: explicar efeitos dos parametros do SARIMA
+# LaTeX: explicar efeitos dos parametros do HW
 
 
 Feito:
 
 # Plotar grafico com os resultados, com o valor dos erros. 
+# Fazer o arima sem o usar a função Auto.arima, mas por conta propria.
+# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito. Falta explicarmos os efeitos e interpretar. 
 
 
 
