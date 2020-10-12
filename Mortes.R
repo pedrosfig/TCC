@@ -123,14 +123,15 @@ SSE_HW_CV <- sum((predict(hw_cross, 24) - mortes_teste)^2)                      
 SSE_arima_auto <- sum((predict(arima_mortes_treino, 24)$pred - mortes_teste)^2)  # ARIMA automatico
 SSE_HW_auto <- sum((predict(hw_mortes_treino, 24) - mortes_teste)^2)             # HW automatico
 
+cbind(SSE_HW_CV, SSE_arima_auto, SSE_HW_auto)
 
 {plot(c(SSE_HW_CV, SSE_arima_auto, SSE_HW_auto), col=c("green","dark orange","red"), type = "p", main = "Test Error", ylab="SSE")
 legend("top", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
        col=c("green","dark orange","red")) 
-}
+
 segments(x0=1, y0=SSE_HW_CV, x1=2, y1=SSE_arima_auto, lty=3)
 segments(x0=2, y0=SSE_arima_auto, x1=3, y1=SSE_HW_auto, lty=3)
-
+}
 
 
 
