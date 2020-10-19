@@ -24,6 +24,23 @@ hw_carro_treino
 arima_carro_treino <- auto.arima(carro_treino)    # ARIMA(1,1,2)(0,1,1)[12]
 arima_carro_treino
 
+windows()
+par(mfrow = c (2,1))
+series = ts(carro_treino)
+acf(series)
+pacf(series)
+
+series2 = diff(series,lag = 1)
+acf(series2)
+pacf(series2)
+
+series3 = diff(series2,lag=12)
+acf(series3,xlim=c(0,25))
+pacf(series3,xlim=c(0,25))
+
+aj1 = arima(series,c(1,1,2),seasonal = list(order = c(0,1,1),period = 12) ) #replicando a parte 1 do auto.arima
+aj2 = arima(series,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12) ) #a parte lag1 pra mim fez sentido esse aqui
+
 
 # Teste infantil inicial
 {ts.plot(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro")
