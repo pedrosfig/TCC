@@ -68,12 +68,11 @@ cbind(AICs,BICs,SSEs)
 # Teste infantil inicial
 {plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
 lines(predict(hw_mortes_treino, 24), col="red", lty=2)
-lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
+lines(predict(aj4, 24)$pred,col = 'blue', lty=2)
 legend("top", inset=.05,
        c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue")) 
 }
 #FYI: nesse caso o arima ganhou (HW_auto é uma bosta)
-
 
 
 # Cross-Validation

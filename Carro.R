@@ -27,32 +27,45 @@ arima_carro_treino
 windows()
 par(mfrow = c (2,1))
 series = ts(carro_treino)
-acf(series)
-pacf(series)
+acf(series,lag.max = 48)
+pacf(series,lag.max = 48)
 
 series2 = diff(series,lag = 1)
-acf(series2)
-pacf(series2)
+acf(series2,lag.max = 48)
+pacf(series2,lag.max = 48)
 
 series3 = diff(series2,lag=12)
-acf(series3,xlim=c(0,25))
-pacf(series3,xlim=c(0,25))
+acf(series3,lag.max = 48);abline(v=c(12,24,36),lty = 2)
+pacf(series3,lag.max = 48);abline(v=c(12,24,36),lty = 2)
 
-aj1 = arima(series,c(1,1,2),seasonal = list(order = c(0,1,1),period = 12) ) #replicando a parte 1 do auto.arima
-aj2 = arima(series,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12) ) #a parte lag1 pra mim fez sentido esse aqui
+aj1 = arima(carro_treino,c(1,1,2),seasonal = list(order = c(0,1,1),period = 12) ) #replicando a parte 1 do auto.arima
+aj2 = arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12) ) 
+aj3 = arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,2),period = 12) )
+aj4 = arima(carro_treino,c(1,0,0),seasonal = list(order = c(1,0,0),period = 12) )
+
+x1 = as.vector(predict(aj1, 12)$pred)
+x2 = as.vector(predict(aj2, 12)$pred)
+x3 = as.vector(predict(aj3, 12)$pred)
+x4 = as.vector(predict(aj4, 12)$pred)
+
+SSE_aj1 <- sum((x1 - carro_teste)^2)
+SSE_aj2 <- sum((x2 - carro_teste)^2)
+SSE_aj3 <- sum((x3 - carro_teste)^2)
+SSE_aj4 <- sum((x4 - carro_teste)^2)
+
+AICs = c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
+BICs = c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
+SSEs <- c(SSE_aj1,SSE_aj2,SSE_aj3,SSE_aj4)
+cbind(AICs,BICs,SSEs)
 
 
 # Teste infantil inicial
 {ts.plot(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro")
 lines(predict(hw_carro_treino, 12), col="red", lty=2)
-lines(predict(arima_carro_treino, 12)$pred,col = 'blue', lty=2)
+lines(predict(aj2, 12)$pred,col = 'blue', lty=2)
 legend("top", inset=.05,
        c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue")) 
 }
-
-
-# FAZER SARIMA na mão
-
 
 
 # Cross-Validation
