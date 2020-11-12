@@ -258,7 +258,7 @@ legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
 {windows()
 par(mfrow = c(2,2))
 
-plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE")
+plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE", bty="n")
 legend("top",lty=0, c("Beta = B = 0.65", "Gamma = C = 0.35"),lwd=1, bty="n")
 plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "SSE")
 legend("top",lty=0, c("Alpha = A = 0.02", "Gamma = C = 0.35"),lwd=1, bty="n")

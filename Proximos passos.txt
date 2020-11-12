@@ -1,11 +1,29 @@
 Fazer:
 
-# Carros: ARIMA
-# explorar situações q tenham alfa menor pra ferrar o Arima
-# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final)
+# Intervalos de Confiança
+# Portugês - trocar SSE por SEQ (EQM) - trocar pra média
+# Além do EQM, usar erro absoluto médio (EAM)
 
-# Mostrar tudo pra Kelly
+# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final) - outra coisa
+# Colocar no gráfico previsão
+# Gerar dados de séries temporais e ajustar com HW
+# Gerar dados com comportamento esperado (queda no nivel ou mudança da sazonalidade)
 
+# Cross-Validation pros parametros do SARIMA
+
+# Mortes - estudo preliminar pra entender parâmetros (apresentação/ilustração do método)
+
+
+# "Expression(paste(gamma, "= 0.35"))" pra escrever as letras gregas
+# plot(bty="n")
+# Não colocar título em gráfico - direto no LaTeX
+# Cores em escala de cinza (normalmente, pra publicar, imprimir)
+# Na apresentação - colorido
+# Apêndice - coisas relevantes mas pra não ficar repetitivo no texto (gráficos, códigos - github)
+
+# LaTeX: relatório (primeiro) e apresentação (por último)
+
+# LaTeX: esboço de índice
 # LaTeX: explicar HoltWinters
 # LaTeX: explicar SARIMA
 # LaTeX: explicar dados

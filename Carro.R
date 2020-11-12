@@ -56,7 +56,7 @@ SSE_aj4 <- sum((x4 - carro_teste)^2)
 AICs = c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
 BICs = c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
 SSEs <- c(SSE_aj1,SSE_aj2,SSE_aj3,SSE_aj4)
-cbind(AICs,BICs,SSEs)
+cbind(AICs,BICs,SSEs)                              # overfitting
 
 
 # Teste infantil inicial
