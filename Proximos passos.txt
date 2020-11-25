@@ -1,7 +1,6 @@
 Fazer:
 
-# Intervalos de Confiança
-# Portugês - trocar SSE por SEQ (EQM) - trocar pra média
+# Intervalos de Confiança - se n tiver - outros modelos - dlm (modelo normal -> pacote)
 # Além do EQM, usar erro absoluto médio (EAM)
 
 # Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final) - outra coisa
@@ -14,8 +13,6 @@ Fazer:
 # Mortes - estudo preliminar pra entender parâmetros (apresentação/ilustração do método)
 
 
-# "Expression(paste(gamma, "= 0.35"))" pra escrever as letras gregas
-# plot(bty="n")
 # Não colocar título em gráfico - direto no LaTeX
 # Cores em escala de cinza (normalmente, pra publicar, imprimir)
 # Na apresentação - colorido
@@ -37,5 +34,6 @@ Feito:
 # Fazer o arima sem o usar a função Auto.arima, mas por conta propria.
 # Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito. Falta explicarmos os efeitos e interpretar. 
 
-
-
+# Português - trocar SSE por SEQ (EQM) - trocar pra média
+# plot(bty="n")
+# "expression(paste(gamma, "= 0.35"))" pra escrever as letras gregas

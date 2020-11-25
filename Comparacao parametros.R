@@ -5,7 +5,7 @@ library(pastecs)
 
 ?USAccDeaths
 mortes <- datasets::USAccDeaths
-ts.plot(mortes)
+plot.ts(mortes, bty="n")
 
 # Separando dados de teste
 
@@ -19,8 +19,8 @@ mortes_teste
 
 # niveis <- seq(from=0.01, to=1, by=0.01)
 # n <- length(niveis)
-# STE_menor = 10^100
-# 
+# EQM_menor = 10^100
+#
 # for(i in 1:n){
 #   a <- niveis[i]
 #   for(j in 1:n){
@@ -28,9 +28,9 @@ mortes_teste
 #     for(k in 1:n){
 #       c <- niveis[k]
 #       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-#       STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-#       if(STE < STE_menor){
-#         STE_menor <- STE
+#       EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+#       if(EQM < EQM_menor){
+#         EQM_menor <- EQM
 #         A <- a
 #         B <- b
 #         C <- c
@@ -39,7 +39,8 @@ mortes_teste
 #   }
 # }
 
-# STE_menor
+# EQM_menor
+
 # # step:  0.1  |  0.05  |  0.01
 # A      # 0.1  |  0.1   |  0.02
 # B      # 0.5  |  0.85  |  0.65
@@ -51,11 +52,11 @@ C <- 0.35
 
 hw_cross_add <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
 hw_cross_mult <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")
-{plot(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes")
+{plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(hw_cross_add, 24), col="red", lty=2)
 lines(predict(hw_cross_mult, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","HW_add", "HW_mult"), lwd=1, lty=c(1,2,2), col=c("black","red","blue")) 
+       c("Real","HW_add", "HW_mult"), lwd=1, lty=c(1,2,2), col=c("black","red","blue"), bty="n") 
 }
 
 
@@ -73,25 +74,25 @@ HW_alpha_4 <- HoltWinters(mortes_treino, alpha=0.8, beta=B, gamma=C, seasonal = 
 {windows()
 par(mfrow = c(2,2))
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_alpha_1, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","alpha = 0.1"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(alpha, " = 0.1"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_alpha_2, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","alpha = 0.3"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(alpha, " = 0.3"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_alpha_3, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","alpha = 0.5"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(alpha, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_alpha_4, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","alpha = 0.8"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(alpha, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 }
 
 
@@ -107,25 +108,25 @@ HW_beta_4 <- HoltWinters(mortes_treino, alpha=A, beta=0.8, gamma=C, seasonal = "
 {windows()
 par(mfrow = c(2,2))
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_beta_1, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","beta = 0.1"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(beta, " = 0.1"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_beta_2, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","beta = 0.3"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(beta, " = 0.3"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_beta_3, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","beta = 0.5"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(beta, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_beta_4, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","beta = 0.8"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(beta, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 }
 
 
@@ -142,25 +143,25 @@ HW_gama_4 <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=0.8, seasonal = "
 {windows()
 par(mfrow = c(2,2))
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_gama_1, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","gama = 0.1"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(gamma, " = 0.1"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_gama_2, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","gama = 0.3"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(gamma, " = 0.3"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_gama_3, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","gama = 0.5"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(gamma, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-ts.plot(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes")
+plot.ts(mortes, ylim=c(5000, 12000), main = "Holt Winters: Mortes", bty="n")
 lines(predict(HW_gama_4, 24), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","gama = 0.8"), lwd=1, lty=c(1,2), col=c("black","blue")) 
+       c("Real",expression(paste(gamma, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 }
 
 
@@ -181,16 +182,16 @@ error_a <- rep(0, n)
 for(i in 1:n){
   a <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=B, gamma=C, seasonal = "add")
-  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-  error_a[i] <- STE
+  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  error_a[i] <- EQM
   
 }
 
 min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
 
-{plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE")
-legend("top",lty=0, c("Beta = B = 0.65", "Gamma = C = 0.35"),lwd=1, bty="n")
+{plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(beta, " = 0.65")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
 }
 
 
@@ -202,15 +203,15 @@ error_b <- rep(0, n)
 for(i in 1:n){
   b <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=b, gamma=C, seasonal = "add")
-  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-  error_b[i] <- STE
+  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  error_b[i] <- EQM
   
 }
 
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
-{plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Gamma = C = 0.35"),lwd=1, bty="n")
+{plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
 }
 
 
@@ -222,15 +223,15 @@ error_c_add <- rep(0, n)
 for(i in 1:n){
   c <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "add")
-  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-  error_c_add[i] <- STE
+  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  error_c_add[i] <- EQM
   
 }
 
 min(error_c_add)                # erro minimo
 niveis[which.min(error_c_add)]  # valor que leva a esse erro
-{plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
+{plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
 }
 
 
@@ -242,15 +243,15 @@ error_c_mult <- rep(0, n)
 for(i in 1:n){
   c <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
-  STE <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )
-  error_c_mult[i] <- STE
+  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  error_c_mult[i] <- EQM
   
 }
 
 min(error_c_mult)                # erro minimo
 niveis[which.min(error_c_mult)]  # valor que leva a esse erro
-{plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
+{plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
 }
 
 
@@ -258,12 +259,12 @@ legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
 {windows()
 par(mfrow = c(2,2))
 
-plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "SSE", bty="n")
-legend("top",lty=0, c("Beta = B = 0.65", "Gamma = C = 0.35"),lwd=1, bty="n")
-plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Gamma = C = 0.35"),lwd=1, bty="n")
-plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
-plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "SSE")
-legend("top",lty=0, c("Alpha = A = 0.02", "Beta = B = 0.65"),lwd=1, bty="n")
+plot(niveis, error_a, main = "Cross-Validation: Error", xlab = "Alpha", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(beta, " = 0.65")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
+plot(niveis, error_b, main = "Cross-Validation: Error", xlab = "Beta", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
+plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = "Gamma (aditivo)", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
+plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = "Gamma (multiplicativo)", ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
 }
