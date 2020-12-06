@@ -9,6 +9,16 @@ plot.ts(carro, bty="n")
 length(carro)
 #trend.test(carro)
 
+# Seatbelts
+?Seatbelts
+
+Seatbelts
+plot.ts(Seatbelts)
+
+
+plot.ts(Seatbelts[,5], bty="n", ylab="Kms")  # kms
+
+
 
 # Separando dados de teste
 
