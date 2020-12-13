@@ -53,15 +53,16 @@ aj2 = arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12) 
 aj3 = arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,2),period = 12) )
 aj4 = arima(carro_treino,c(1,0,0),seasonal = list(order = c(1,0,0),period = 12) )
 
-EQM_aj1 <- sum((predict(aj1, 12)$pred - carro_teste)^2)/12
-EQM_aj2 <- sum((predict(aj2, 12)$pred - carro_teste)^2)/12
-EQM_aj3 <- sum((predict(aj3, 12)$pred - carro_teste)^2)/12
-EQM_aj4 <- sum((predict(aj4, 12)$pred - carro_teste)^2)/12
+EQM_aj1 <- sum((predict(aj1, 12)$pred - carro_teste)^2)/12;EAM_aj1 = sum(abs(predict(aj1, 12)$pred - carro_teste))/12
+EQM_aj2 <- sum((predict(aj2, 12)$pred - carro_teste)^2)/12;EAM_aj2 = sum(abs(predict(aj2, 12)$pred - carro_teste))/12
+EQM_aj3 <- sum((predict(aj3, 12)$pred - carro_teste)^2)/12;EAM_aj3 = sum(abs(predict(aj3, 12)$pred - carro_teste))/12
+EQM_aj4 <- sum((predict(aj4, 12)$pred - carro_teste)^2)/12;EAM_aj4 = sum(abs(predict(aj4, 12)$pred - carro_teste))/12
 
 AICs = c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
 BICs = c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
 EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4)
-cbind(AICs,BICs,EQMs)                              # overfitting
+EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4)
+cbind(AICs,BICs,EQMs,EAMs)                              # overfitting
 
 
 # Teste infantil inicial
@@ -73,7 +74,7 @@ legend("top", inset=.05,
 }
 
 
-# Cross-Validation
+# Cross-Validation do HW
 
 # niveis <- seq(from=0.01, to=1, by=0.01)
 # n <- length(niveis)
@@ -107,35 +108,68 @@ A <- 0.08
 B <- 0.01
 C <- 0.26
 
+####### Cross-Validation do arima 
 
+aj2$coef
+teste = arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12),fixed = c(0.2205,-0.7579,-0.9) )
+teste$coef
 
-hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
+#  niveis <- seq(from= -1, to=1, by=0.02)
+#  n <- length(niveis)
+#  EQM_menor = 10^100
+  
+#  for(i in 1:n){
+#    m <- niveis[i]
+#    for(j in 1:n){
+#      n <- niveis[j]
+#      for(k in 1:n){
+#        o <- niveis[k]
+#        arima_cross <- arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12),fixed = c(m,n,o))
+#        EQM <- sum( (predict(arima_cross, 12)$pred - carro_teste)^2 )/12
+#        if(EQM < EQM_menor){
+#          EQM_menor <- EQM
+#          M <- m
+#          N <- n
+#          O <- o
+#        }
+#      }
+#    }
+#  }
+  
+  # EQM_menor (a partir do aj2)
+# # step:  0.2  |  0.1   |  0.02
+# M      # 0.2  |  0.3   |  0.16
+# N      # -1   |  1     |  -0.96
+# O      # -0.4 |  -0.9  |  -0.76
+# Original: 0.2205 -0.7579 -0.9127861
+
+ hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
+ arima_cross <- arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12),fixed = c(M,N,O))
 {plot.ts(carro, ylim=c(1000, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro", bty="n")
         lines(predict(hw_cross, 12), col="red", lty=2)
-        lines(predict(arima_carro_treino, 12)$pred,col = 'blue', lty=2)
+        lines(predict(arima_cross, 12)$pred,col = 'blue', lty=2)
         legend("top", inset=.05,
                c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
 
 
 
-EQM_HW_CV <- sum((predict(hw_cross, 12) - carro_teste)^2)/12                       # HW Cross-Validation
-EQM_arima_auto <- sum((predict(arima_carro_treino, 12)$pred - carro_teste)^2)/12   # ARIMA automatico
-EQM_HW_auto <- sum((predict(hw_carro_treino, 12) - carro_teste)^2)/12              # HW automatico
+EQM_HW_CV <- sum((predict(hw_cross, 12) - carro_teste)^2)/12; EAM_HW_CV <- sum(abs(predict(hw_cross, 12) - carro_teste))/12# HW Cross-Validation
+EQM_arima_CV <- sum((predict(arima_cross, 12)$pred - carro_teste)^2)/12; EAM_arima_CV <- sum(abs(predict(arima_cross, 12)$pred - carro_teste))/12 # ARIMA automatico
+EQM_HW_auto <- sum((predict(hw_carro_treino, 12) - carro_teste)^2)/12; EAM_HW_auto <- sum(abs(predict(hw_carro_treino, 12) - carro_teste))/12 # HW automatico
+EQM_arima_auto <- sum((predict(aj2, 12)$pred - carro_teste)^2)/12; EAM_arima_auto <- sum(abs(predict(aj2, 12)$pred - carro_teste))/12 # ARIMA automatico
 
-cbind(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto)
+rbind(cbind(EQM_HW_CV, EQM_arima_CV, EQM_HW_auto,EQM_arima_auto),cbind(EAM_HW_CV, EAM_arima_CV, EAM_HW_auto,EAM_arima_auto))
 
 
-{plot(c(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto), col=c("green","dark orange","red"), type = "p", main = "Test Error", ylab="EQM", bty="n")
-        legend("bottom", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
-               col=c("green","dark orange","red"), bty="n") 
+{plot(c(EQM_HW_CV,EQM_arima_CV,EQM_arima_auto, EQM_HW_auto), col=c("green","dark orange","red","blue"), type = "p", main = "Test Error", ylab="EQM", bty="n")
+        legend("topleft", inset=.05, c("HW CV","Arima CV" ,"ARIMA automatico","HW automatico"), lty = 1, 
+               col=c("green","dark orange","red","blue"), bty="n") 
         
-        segments(x0=1, y0=EQM_HW_CV, x1=2, y1=EQM_arima_auto, lty=3)
-        segments(x0=2, y0=EQM_arima_auto, x1=3, y1=EQM_HW_auto, lty=3)
+        segments(x0=1, y0=EQM_HW_CV, x1=2, y1=EQM_arima_CV, lty=3)
+        segments(x0=2, y0=EQM_arima_CV, x1=3, y1=EQM_arima_auto, lty=3)
+        segments(x0=3, y0=EQM_arima_auto, x1=4, y1=EQM_HW_auto, lty=3)
 }
-
-
-
 
 
 
