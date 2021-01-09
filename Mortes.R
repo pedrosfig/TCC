@@ -54,10 +54,19 @@ EQM_aj2 <- sum((predict(aj2, 24)$pred - mortes_teste)^2)/24
 EQM_aj3 <- sum((predict(aj3, 24)$pred - mortes_teste)^2)/24
 EQM_aj4 <- sum((predict(aj4, 24)$pred - mortes_teste)^2)/24
 
-AICs = c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
-BICs = c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
+EAM_aj1 <- sum(abs(predict(aj1, 24)$pred - mortes_teste))/24
+EAM_aj2 <- sum(abs(predict(aj2, 24)$pred - mortes_teste))/24
+EAM_aj3 <- sum(abs(predict(aj3, 24)$pred - mortes_teste))/24
+EAM_aj4 <- sum(abs(predict(aj4, 24)$pred - mortes_teste))/24
+
+
+AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
+BICs <- c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
 EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4)
-cbind(AICs,BICs,EQMs)
+EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4)
+ajuste <- c("aj1", "aj2", "aj3", "aj4")
+data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)
+
 
 #podemos ver que o ajuste com menores erros é o 4 (auto.arima)
 
@@ -66,12 +75,19 @@ cbind(AICs,BICs,EQMs)
 
 
 # Teste infantil inicial
+
+HW_pred <- predict(hw_mortes_treino, 24, prediction.interval = T, level = 0.95)
+
 {plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
-lines(predict(hw_mortes_treino, 24), col="red", lty=2)
-lines(predict(aj4, 24)$pred,col = 'blue', lty=2)
-legend("top", inset=.05,
-       c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
+      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
+      lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
+      lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
+      #lines(predict(hw_mortes_treino, 24), col="red", lty=2)
+      lines(predict(aj4, 24)$pred,col = 'blue', lty=2)
+      legend("top", inset=.05,
+             c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
+
 #FYI: nesse caso o arima ganhou (HW_auto é uma bosta)
 
 
@@ -112,11 +128,17 @@ C <- 0.35
 
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
+HW_pred <- predict(hw_cross, 24, prediction.interval = T, level = 0.95)
+
+
 {plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
-lines(predict(hw_cross, 24), col="red", lty=2)
-lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
-legend("top", inset=.05,
-       c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
+      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
+      lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
+      lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
+      #lines(predict(hw_cross, 24), col="red", lty=2)
+      lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
+      legend("top", inset=.05,
+             c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
 
 EQM_HW_CV <- sum((predict(hw_cross, 24) - mortes_teste)^2)/24                       # HW Cross-Validation
@@ -126,11 +148,11 @@ EQM_HW_auto <- sum((predict(hw_mortes_treino, 24) - mortes_teste)^2)/24         
 cbind(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto)
 
 {plot(c(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto), col=c("green","dark orange","red"), type = "p", main = "Erro de Teste", ylab="EQM", bty="n")
-legend("top", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
-       col=c("green","dark orange","red"), bty="n") 
+      legend("top", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
+             col=c("green","dark orange","red"), bty="n") 
 
-segments(x0=1, y0=EQM_HW_CV, x1=2, y1=EQM_arima_auto, lty=3)
-segments(x0=2, y0=EQM_arima_auto, x1=3, y1=EQM_HW_auto, lty=3)
+      segments(x0=1, y0=EQM_HW_CV, x1=2, y1=EQM_arima_auto, lty=3)
+      segments(x0=2, y0=EQM_arima_auto, x1=3, y1=EQM_HW_auto, lty=3)
 }
 
 
