@@ -78,12 +78,19 @@ data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)
 
 HW_pred <- predict(hw_mortes_treino, 24, prediction.interval = T, level = 0.95)
 
+pred = predict(aj4, 12)
+ypred = pred$pred
+qinf= ypred - qnorm(.975)*pred$se
+qsup= ypred + qnorm(.975)*pred$se
+
+
 {plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
-      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
+      lines(HW_pred[,1], col="red", lty=1)      # HW_pred fit
       lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
       lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
-      #lines(predict(hw_mortes_treino, 24), col="red", lty=2)
-      lines(predict(aj4, 24)$pred,col = 'blue', lty=2)
+      lines(predict(aj4, 24)$pred,col = 'blue', lty=1)
+      lines(qinf,col = 'blue',lty = 3)                  # sarima_pred lwr
+      lines(qsup,col = 'blue',lty = 3)                  # sarima_pred upr
       legend("top", inset=.05,
              c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
@@ -126,17 +133,55 @@ A <- 0.02
 B <- 0.65
 C <- 0.35
 
+####### Cross-Validation do arima 
+
+# aj4$coef
+# teste = arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(-0.3868365,-0.4418667) )
+# teste$coef
+
+#  niveis <- seq(from= -1, to=1, by=0.02)
+#  l <- length(niveis)
+#  EQM_menor = 10^100
+
+#  for(i in 1:l){
+#    m <- niveis[i]
+#    for(j in 1:l){
+#      n <- niveis[j]
+#        arima_cross <- arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(m,n))
+#        EQM <- sum( (predict(arima_cross, 12)$pred - mortes_teste)^2 )/12
+#        if(EQM < EQM_menor){
+#          EQM_menor <- EQM
+#          M <- m
+#          N <- n
+#        }
+#    }
+#  }
+
+# EQM_menor (a partir do aj2)
+#  step:   0.2   |  0.1  |  0.02
+# M       -0.4  |  -0.4 |  -0.46
+# N       -0.2  |  -0.2 |  -0.14
+# Original: -0.387 -0.442 
+
+M <- -0.46
+N <- -0.14
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
-HW_pred <- predict(hw_cross, 24, prediction.interval = T, level = 0.95)
+HW_pred_cross <- predict(hw_cross, 24, prediction.interval = T, level = 0.95)
 
+arima_cross <- arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(M,N))
+pred_cross = predict(arima_cross, 24)
+ypred_cross = pred_cross$pred
+qinf_cross= ypred_cross - qnorm(.975)*pred_cross$se
+qsup_cross= ypred_cross + qnorm(.975)*pred_cross$se
 
 {plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
-      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
-      lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
-      lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
-      #lines(predict(hw_cross, 24), col="red", lty=2)
-      lines(predict(arima_mortes_treino, 24)$pred,col = 'blue', lty=2)
+      lines(HW_pred_cross[,1], col="red", lty=1)      # HW_pred fit
+      lines(HW_pred_cross[,2], col="red", lty=3)      # HW_pred upr
+      lines(HW_pred_cross [,3], col="red", lty=3)      # HW_pred lwr
+      lines(predict(arima_cross, 24)$pred,col = 'blue', lty=1)
+      lines(qinf_cross,col = 'blue', lty=3)
+      lines(qsup_cross,col = 'blue', lty=3)
       legend("top", inset=.05,
              c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }

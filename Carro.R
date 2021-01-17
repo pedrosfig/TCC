@@ -75,16 +75,23 @@ data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)    # overfitting
 
 HW_pred <- predict(hw_carro_treino, 12, prediction.interval = T, level = 0.95)
 
+pred = predict(aj2, 12)
+ypred = pred$pred
+qinf= ypred - qnorm(.975)*pred$se
+qsup= ypred + qnorm(.975)*pred$se
+
+
 {plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro", bty="n")
-      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
+      lines(HW_pred[,1], col="red", lty=1)      # HW_pred fit
       lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
       lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
       #lines(predict(hw_carro_treino, 12), col="red", lty=2)
-      lines(predict(aj2, 12)$pred,col = 'blue', lty=2)
+      lines(predict(aj2, 12)$pred,col = 'blue', lty=1)  # sarima_pred fit
+      lines(qinf,col = 'blue',lty = 3)                  # sarima_pred lwr
+      lines(qsup,col = 'blue',lty = 3)                  # sarima_pred upr
       legend("top", inset=.05,
              c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
-
 
 # Cross-Validation do HW
 
@@ -160,16 +167,22 @@ N <- -0.96
 O <- -0.76
 
 hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
-HW_pred <- predict(hw_cross, 12, prediction.interval = T, level = 0.95)
+HW_pred_cross <- predict(hw_cross, 12, prediction.interval = T, level = 0.95)
 
 arima_cross <- arima(carro_treino,c(1,1,1),seasonal = list(order = c(0,1,1),period = 12),fixed = c(M,N,O))
+pred_cross = predict(arima_cross, 12)
+ypred_cross = pred_cross$pred
+qinf_cross= ypred_cross - qnorm(.975)*pred_cross$se
+qsup_cross= ypred_cross + qnorm(.975)*pred_cross$se
+
   
 {plot.ts(carro, ylim=c(500, 2500), xlim=c(1983, 1985), main = "Holt Winters: Carro", bty="n")
-      lines(HW_pred[,1], col="red", lty=2)      # HW_pred fit
-      lines(HW_pred[,2], col="red", lty=3)      # HW_pred upr
-      lines(HW_pred[,3], col="red", lty=3)      # HW_pred lwr
-      lines(predict(hw_cross, 12), col="red", lty=2)
-      lines(predict(arima_cross, 12)$pred,col = 'blue', lty=2)
+      lines(HW_pred_cross[,1], col="red", lty=1)
+      lines(HW_pred_cross[,2], col="red", lty=3)      # HW_pred upr
+      lines(HW_pred_cross[,3], col="red", lty=3)      # HW_pred lwr
+      lines(predict(arima_cross, 12)$pred,col = 'blue', lty=1) 
+      lines(qinf_cross,col = 'blue',lty = 3)                   # sarima_pred lwr
+      lines(qsup_cross,col = 'blue',lty = 3)                   # sarima_pred upr
       legend("top", inset=.05,
              c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
