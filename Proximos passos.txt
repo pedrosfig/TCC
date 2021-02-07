@@ -26,6 +26,15 @@ Fazer:
 # LaTeX: explicar dados
 # LaTeX: explicar efeitos dos parametros do SARIMA
 # LaTeX: explicar efeitos dos parametros do HW
+## colocar suavização exponencial? (para explicar o parâmetro alpha sozinho)
+# LaTeX: 
+## só numerar equações usadas no texto depois
+## Introdução - revisao de literatura pra botar referencias de outros métodos também (inclusive bayesianos)
+## Função Holt-Winters no cap de HW
+## Dados - analise exploratoria p mostrar sazonalidade (series temporais)
+## Dados_1 + resultado_1
+## Dados_2 + resultado_2
+## (capitulo unico de aplicação ou um cap pra cada aplicação - se forem diferentes)
 
 
 Feito:
