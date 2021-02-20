@@ -5,7 +5,7 @@ library(pastecs)
 
 ?USAccDeaths
 mortes <- datasets::USAccDeaths
-plot.ts(mortes, bty="n")
+plot.ts(mortes, bty="n", ylab="Mortes")
 length(mortes)
 trend.test(mortes)
 
@@ -22,8 +22,10 @@ lines(fit$fitted,col='blue')
 mortes
 mortes_treino <- subset(mortes, end = 48)
 mortes_treino
-mortes_teste <- subset(mortes, start = 49)
+mortes_teste <- subset(mortes, start = 49, end = 60)
 mortes_teste
+mortes_prev <- subset(mortes, start = 61)
+mortes_prev
 
 hw_mortes_treino <- HoltWinters(mortes_treino, seasonal = "add") # a=0.78 b=0 c=0.43
 hw_mortes_treino
