@@ -5,7 +5,7 @@ library(pastecs)
 
 ?UKDriverDeaths
 carro <- datasets::UKDriverDeaths
-plot.ts(carro, bty="n")
+plot.ts(carro, bty="n", ylab="Acidentes")
 length(carro)
 #trend.test(carro)
 
@@ -105,7 +105,7 @@ qsup= ypred + qnorm(.975)*pred$se
 #     b <- niveis[j]
 #     for(k in 1:n){
 #       c <- niveis[k]
-#       hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
+#       hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=c, seasonal = "mult")
 #       EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #       if(EQM < EQM_menor){
 #         EQM_menor <- EQM
@@ -118,14 +118,25 @@ qsup= ypred + qnorm(.975)*pred$se
 # }
 # 
 # EQM_menor
-# # step:  0.1  |  0.05  |  0.01
-# A      # 0.3  |  0.2   |  0.08
-# B      # 0.6  |  0.75  |  0.01
-# C      # 0.1  |  0.2  |  0.26
+# # step:  0.1  |  0.05  |  0.01  | 0.01 (mult)
+# A      # 0.3  |  0.2   |  0.08  |  
+# B      # 0.6  |  0.75  |  0.01  |  
+# C      # 0.1  |  0.20  |  0.26  |  
+# EQM_menor     #        |  1336  |  1391
 
 A <- 0.08
 B <- 0.01
 C <- 0.26
+
+hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
+EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
+EQM
+
+plot.ts(carro, ylim=c(500, 2500), xlim=c(1983, 1985), bty="n", ylab = "Acidentes")
+  lines(predict(hw_cross, 12), col="red", lty=2)
+  legend("top", inset=.05,
+         c("Real","HW_CV"), lwd=1, lty=c(1,2), col=c("black","red"), bty="n") 
+
 
 ####### Cross-Validation do arima 
 
