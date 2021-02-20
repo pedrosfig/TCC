@@ -3,14 +3,16 @@ Fazer:
 # Intervalos de Confiança - se n tiver - outros modelos - dlm (modelo normal -> pacote)
 # Além do EQM, usar erro absoluto médio (EAM)
 
-# Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final) - outra coisa
+# Carro- estudo preliminar pra entender parâmetros (apresentação/ilustração do método)
+
+# Mortes: Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final) - outra coisa
 # Colocar no gráfico previsão
+
 # Gerar dados de séries temporais e ajustar com HW
 # Gerar dados com comportamento esperado (queda no nivel ou mudança da sazonalidade)
 
 # Cross-Validation pros parametros do SARIMA
 
-# Mortes - estudo preliminar pra entender parâmetros (apresentação/ilustração do método)
 
 
 # Não colocar título em gráfico - direto no LaTeX
