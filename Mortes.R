@@ -146,12 +146,13 @@ subset(hw_pred, start = 13)
 EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_prev
 
+{
 plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
 lines(subset(hw_pred, end=12), col="red", lty=2)
 lines(subset(hw_pred, start=13), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real","HW_CV_teste", "HW_CV_prev"), lwd=1, lty=c(1,2,2), col=c("black","red","blue"), bty="n") 
-
+       c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,2), col=c("black","red","blue"), bty="n") 
+}
 
 
 ####### Cross-Validation do arima 

@@ -9,26 +9,29 @@ plot.ts(mortes, bty="n")
 
 # Separando dados de teste
 
+mortes
 mortes_treino <- subset(mortes, end = 48)
 mortes_treino
-mortes_teste <- subset(mortes, start = 49)
+mortes_teste <- subset(mortes, start = 49, end = 60)
 mortes_teste
+mortes_prev <- subset(mortes, start = 61)
+mortes_prev
 
 
-# Cross-Validation
-
+# # Cross-Validation
+# 
 # niveis <- seq(from=0.01, to=1, by=0.01)
 # n <- length(niveis)
 # EQM_menor = 10^100
-#
+# 
 # for(i in 1:n){
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     b <- niveis[j]
 #     for(k in 1:n){
 #       c <- niveis[k]
-#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-#       EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "mult")
+#       EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #       if(EQM < EQM_menor){
 #         EQM_menor <- EQM
 #         A <- a
@@ -38,17 +41,46 @@ mortes_teste
 #     }
 #   }
 # }
-
+# 
 # EQM_menor
+# 
+# # step:  0.1  |  0.05  |  0.01  | 0.01 (mult)
+# A      # 0.1  |  0.10  |  0.09  |  0.09
+# B      # 0.4  |  0.35  |  0.38  |  0.39
+# C      # 0.7  |  0.80  |  0.82  |  0.80
+# # EQM_menor     #      | 30344  | 28750  
 
-# # step:  0.1  |  0.05  |  0.01
-# A      # 0.1  |  0.1   |  0.02
-# B      # 0.5  |  0.85  |  0.65
-# C      # 0.5  |  0.25  |  0.35
+A <- 0.09
+B <- 0.39
+C <- 0.80
 
-A <- 0.02
-B <- 0.65
-C <- 0.35
+hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")
+EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+EQM
+
+hw_pred <- predict(hw_cross, 24)
+subset(hw_pred, start = 13)
+
+EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
+EQM_prev
+
+{
+  plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  lines(subset(hw_pred, end=12), col="blue", lty=2)
+  lines(subset(hw_pred, start=13), col="blue", lty=3)
+  legend("top", inset=.05,
+         c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+}
+
+
+
+
+
+
+
+
+
+
 
 hw_cross_add <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
 hw_cross_mult <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")
@@ -181,8 +213,8 @@ error_a <- rep(0, n)
 
 for(i in 1:n){
   a <- niveis[i]
-  hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=B, gamma=C, seasonal = "add")
-  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=B, gamma=C, seasonal = "mult")
+  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
   error_a[i] <- EQM
   
 }
@@ -190,8 +222,8 @@ for(i in 1:n){
 min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
 
-{plot(niveis, error_a, main = "Cross-Validation: Error", xlab = expression(alpha), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(beta, " = 0.65")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
+{plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(beta, " = 0.39")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
 }
 
 
@@ -202,37 +234,18 @@ error_b <- rep(0, n)
 
 for(i in 1:n){
   b <- niveis[i]
-  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=b, gamma=C, seasonal = "add")
-  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=b, gamma=C, seasonal = "mult")
+  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
   error_b[i] <- EQM
   
 }
 
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
-{plot(niveis, error_b, main = "Cross-Validation: Error", xlab = expression(beta), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
+{plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
 }
 
-
-
-# Gamma Aditivo
-
-error_c_add <- rep(0, n)
-
-for(i in 1:n){
-  c <- niveis[i]
-  hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "add")
-  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
-  error_c_add[i] <- EQM
-  
-}
-
-min(error_c_add)                # erro minimo
-niveis[which.min(error_c_add)]  # valor que leva a esse erro
-{plot(niveis, error_c_add, main = "Cross-Validation: Error", xlab = expression(paste(gamma, " (aditivo)")), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
-}
 
 
 
@@ -243,28 +256,60 @@ error_c_mult <- rep(0, n)
 for(i in 1:n){
   c <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
-  EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
   error_c_mult[i] <- EQM
   
 }
 
 min(error_c_mult)                # erro minimo
 niveis[which.min(error_c_mult)]  # valor que leva a esse erro
-{plot(niveis, error_c_mult, main = "Cross-Validation: Error", xlab = expression(paste(gamma, " (multiplicativo)")), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
+{plot(niveis, error_c_mult, xlab = expression(gamma), ylab = "EQM", bty="n")
+legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
 }
-
 
 
 {windows()
-par(mfrow = c(2,2))
-
-plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(beta, " = 0.65")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
-plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(gamma, " = 0.35"))),lwd=1, bty="n")
-plot(niveis, error_c_add, xlab = expression(paste(gamma, " (aditivo)")), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
-plot(niveis, error_c_mult, xlab = expression(paste(gamma, " (multiplicativo)")), ylab = "EQM", bty="n")
-legend("top",lty=0, c(expression(paste(alpha, " = 0.02")), expression(paste(beta, " = 0.65"))),lwd=1, bty="n")
+  par(mfrow = c(1,3))
+  
+  plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
+  legend("top",lty=0, c(expression(paste(beta, " = 0.39")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
+  plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
+  legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
+  plot(niveis, error_c_mult, xlab = expression(paste(gamma, " (multiplicativo)")), ylab = "EQM", bty="n")
+  legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
 }
+
+
+# # Gamma Aditivo
+# 
+# error_c_add <- rep(0, n)
+# 
+# for(i in 1:n){
+#   c <- niveis[i]
+#   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "add")
+#   EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+#   error_c_add[i] <- EQM
+#   
+# }
+# 
+# min(error_c_add)                # erro minimo
+# niveis[which.min(error_c_add)]  # valor que leva a esse erro
+# {plot(niveis, error_c_add, xlab = expression(paste(gamma, " (aditivo)")), ylab = "EQM", bty="n")
+#   legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
+# }
+# 
+# 
+# 
+# 
+# {windows()
+# par(mfrow = c(2,2))
+# 
+# plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
+# legend("top",lty=0, c(expression(paste(beta, " = 0.39")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
+# plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
+# legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
+# plot(niveis, error_c_add, xlab = expression(paste(gamma, " (aditivo)")), ylab = "EQM", bty="n")
+# legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
+# plot(niveis, error_c_mult, xlab = expression(paste(gamma, " (multiplicativo)")), ylab = "EQM", bty="n")
+# legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
+# }
