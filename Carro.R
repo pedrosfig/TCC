@@ -93,8 +93,8 @@ qsup= ypred + qnorm(.975)*pred$se
              c("Real","HW_auto", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
 }
 
-# Cross-Validation do HW
-
+# # Cross-Validation do HW
+# 
 # niveis <- seq(from=0.01, to=1, by=0.01)
 # n <- length(niveis)
 # EQM_menor = 10^100
@@ -105,7 +105,7 @@ qsup= ypred + qnorm(.975)*pred$se
 #     b <- niveis[j]
 #     for(k in 1:n){
 #       c <- niveis[k]
-#       hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=c, seasonal = "mult")
+#       hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
 #       EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #       if(EQM < EQM_menor){
 #         EQM_menor <- EQM
@@ -119,9 +119,9 @@ qsup= ypred + qnorm(.975)*pred$se
 # 
 # EQM_menor
 # # step:  0.1  |  0.05  |  0.01  | 0.01 (mult)
-# A      # 0.3  |  0.2   |  0.08  |  
-# B      # 0.6  |  0.75  |  0.01  |  
-# C      # 0.1  |  0.20  |  0.26  |  
+# A      # 0.3  |  0.2   |  0.08  |  0.21
+# B      # 0.6  |  0.75  |  0.01  |  0.80
+# C      # 0.1  |  0.20  |  0.26  |  0.2
 # EQM_menor     #        |  1336  |  1391
 
 A <- 0.08

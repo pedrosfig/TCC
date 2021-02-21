@@ -100,8 +100,8 @@ qsup= ypred + qnorm(.975)*pred$se
 #FYI: nesse caso o arima ganhou (HW_auto é uma bosta)
 
 
-# Cross-Validation
-
+# # Cross-Validation
+# 
 # niveis <- seq(from=0.01, to=1, by=0.01)
 # n <- length(niveis)
 # EQM_menor = 10^100
@@ -112,8 +112,8 @@ qsup= ypred + qnorm(.975)*pred$se
 #     b <- niveis[j]
 #     for(k in 1:n){
 #       c <- niveis[k]
-#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "add")
-#       EQM <- sum( (predict(hw_cross, 24) - mortes_teste)^2 )/24
+#       hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=c, seasonal = "mult")
+#       EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #       if(EQM < EQM_menor){
 #         EQM_menor <- EQM
 #         A <- a
@@ -123,17 +123,36 @@ qsup= ypred + qnorm(.975)*pred$se
 #     }
 #   }
 # }
-
+# 
 # EQM_menor
+# 
+# # step:  0.1  |  0.05  |  0.01  | 0.01 (mult)
+# A      # 0.1  |  0.10  |  0.09  |  0.09
+# B      # 0.4  |  0.35  |  0.38  |  0.39
+# C      # 0.7  |  0.80  |  0.82  |  0.80
+# # EQM_menor     #      | 30344  | 28750  
 
-# # step:  0.1  |  0.05  |  0.01
-# A      # 0.1  |  0.1   |  0.02
-# B      # 0.5  |  0.85  |  0.65
-# C      # 0.5  |  0.25  |  0.35
+A <- 0.09
+B <- 0.39
+C <- 0.80
 
-A <- 0.02
-B <- 0.65
-C <- 0.35
+hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")
+EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+EQM
+
+hw_pred <- predict(hw_cross, 24)
+subset(hw_pred, start = 13)
+
+EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
+EQM_prev
+
+plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+lines(subset(hw_pred, end=12), col="red", lty=2)
+lines(subset(hw_pred, start=13), col="blue", lty=2)
+legend("top", inset=.05,
+       c("Real","HW_CV_teste", "HW_CV_prev"), lwd=1, lty=c(1,2,2), col=c("black","red","blue"), bty="n") 
+
+
 
 ####### Cross-Validation do arima 
 
