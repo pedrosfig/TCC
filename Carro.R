@@ -257,7 +257,7 @@ par(mfrow = c(2,2))
 plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
-       c("Real",expression(paste(alpha, " = 0.1"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+       c("Real",expression(paste(alpha, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
 plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_2, 12), col="blue", lty=2)

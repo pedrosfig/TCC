@@ -148,10 +148,10 @@ EQM_prev
 
 {
 plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
-lines(subset(hw_pred, end=12), col="red", lty=2)
-lines(subset(hw_pred, start=13), col="blue", lty=2)
+lines(subset(hw_pred, end=12), col="blue", lty=2)
+lines(subset(hw_pred, start=13), col="blue", lty=3)
 legend("top", inset=.05,
-       c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,2), col=c("black","red","blue"), bty="n") 
+       c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
 
