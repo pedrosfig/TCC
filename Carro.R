@@ -448,35 +448,45 @@ niveis[which.min(error_c_add)]  # valor que leva a esse erro
 
 
 
-# Gamma Multiplicativo
-
-error_c_mult <- rep(0, n)
-
-for(i in 1:n){
-        c <- niveis[i]
-        hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
-        EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
-        error_c_mult[i] <- EQM
-        
-}
-
-min(error_c_mult)                # erro minimo
-niveis[which.min(error_c_mult)]  # valor que leva a esse erro
-{plot(niveis, error_c_mult, xlab = c(expression(paste(gamma, " (multiplicativo)"))), ylab = "EQM", bty="n")
-        legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+{plot(niveis, error_a, xlab = "Parâmetro", type = "l", lty = 1, lwd = 2, col = "red",
+     ylab = "EQM", bty="n", ylim = c(0, 450000))
+lines(niveis, error_b, lty = 2, lwd = 2, col = "blue")
+lines(niveis, error_c_add, lty = 3, lwd = 2, col = "green4")
+legend("topleft",c(expression(alpha), expression(beta), expression(gamma)), 
+       lty=c(1,2,3), lwd=2, bty="n",col=c("red","blue", "green4"))
 }
 
 
 
-{windows()
-        par(mfrow = c(2,2))
-        
-        plot(niveis, error_a, xlab = "Alpha", ylab = "EQM", bty="n")
-        legend("topleft",lty=0, c(expression(paste(beta, " = 0.01")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
-        plot(niveis, error_b, xlab = "Beta", ylab = "EQM", bty="n")
-        legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
-        plot(niveis, error_c_add, xlab = "Gamma (aditivo)", ylab = "EQM", bty="n")
-        legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
-        plot(niveis, error_c_mult, xlab = "Gamma (multiplicativo)", ylab = "EQM", bty="n")
-        legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
-}
+# # Gamma Multiplicativo
+# 
+# error_c_mult <- rep(0, n)
+# 
+# for(i in 1:n){
+#         c <- niveis[i]
+#         hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
+#         EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
+#         error_c_mult[i] <- EQM
+#         
+# }
+# 
+# min(error_c_mult)                # erro minimo
+# niveis[which.min(error_c_mult)]  # valor que leva a esse erro
+# {plot(niveis, error_c_mult, xlab = c(expression(paste(gamma, " (multiplicativo)"))), ylab = "EQM", bty="n")
+#         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+# }
+# 
+# 
+# 
+# {windows()
+#         par(mfrow = c(2,2))
+#         
+#         plot(niveis, error_a, xlab = "Alpha", ylab = "EQM", bty="n")
+#         legend("topleft",lty=0, c(expression(paste(beta, " = 0.01")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
+#         plot(niveis, error_b, xlab = "Beta", ylab = "EQM", bty="n")
+#         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
+#         plot(niveis, error_c_add, xlab = "Gamma (aditivo)", ylab = "EQM", bty="n")
+#         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+#         plot(niveis, error_c_mult, xlab = "Gamma (multiplicativo)", ylab = "EQM", bty="n")
+#         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+# }

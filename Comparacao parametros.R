@@ -268,6 +268,16 @@ legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta
 }
 
 
+{plot(niveis, error_a, xlab = "Parâmetro", type = "l", lty = 1, lwd = 2, col = "red",
+      ylab = "EQM", bty="n", ylim = c(0, 8000000))
+  lines(niveis, error_b, lty = 2, lwd = 2, col = "blue")
+  lines(niveis, error_c_add, lty = 3, lwd = 2, col = "green4")
+  legend("topleft",c(expression(alpha), expression(beta), expression(gamma)), 
+         lty=c(1,2,3), lwd=2, bty="n",col=c("red","blue", "green4"))
+}
+
+
+
 {windows()
   par(mfrow = c(1,3))
   
