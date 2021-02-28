@@ -35,20 +35,20 @@ arima_mortes_treino
 
 
 # ACF e PACF
-acf(ts(mortes_treino), lag.max = 30)
-pacf(ts(mortes_treino), lag.max = 30)
+acf(ts(mortes_treino), lag.max = 36,main = "")   #(AR(1)),12(AR(1))
+pacf(ts(mortes_treino), lag.max = 36,main = "")
 
 serie_diff=ts(diff(mortes_treino,lag = 1))
-acf(serie_diff, lag.max = 30)
-pacf(serie_diff, lag.max = 30)
+acf(serie_diff, lag.max = 36,main = "")
+pacf(serie_diff, lag.max = 36,main = "")
 
 serie_diff12 = diff(serie_diff, lag = 12)
-acf(serie_diff12, lag.max = 30)
-pacf(serie_diff12, lag.max = 30)
+acf(serie_diff12, lag.max = 36,main = "")
+pacf(serie_diff12, lag.max = 36,main = "")
 
-aj1 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12))
-aj2 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,0,0),period = 12))
-aj3 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,1),period = 12))
+aj1 = arima(mortes_treino,c(1,0,0),seasonal = list(order=c(1,0,0),period = 12))
+aj2 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12)) 
+aj3 = arima(mortes_treino,c(1,1,0),seasonal = list(order=c(0,1,0),period = 12))
 aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))  # igual ao auto.arima
 
 EQM_aj1 <- sum((predict(aj1, 24)$pred - mortes_teste)^2)/24
@@ -137,14 +137,14 @@ B <- 0.39
 C <- 0.80
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "mult")
-EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-EQM
+EQM_Holt <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+EQM_Holt
 
 hw_pred <- predict(hw_cross, 24)
 subset(hw_pred, start = 13)
 
-EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
-EQM_prev
+EQM_Holt_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
+EQM_Holt_prev
 
 {
 plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
@@ -161,9 +161,9 @@ legend("top", inset=.05,
 # teste = arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(-0.3868365,-0.4418667) )
 # teste$coef
 
-#  niveis <- seq(from= -1, to=1, by=0.02)
-#  l <- length(niveis)
-#  EQM_menor = 10^100
+  niveis <- seq(from= -1, to=1, by=0.02)
+  l <- length(niveis)
+  EQM_menor = 10^100
 
 #  for(i in 1:l){
 #    m <- niveis[i]
@@ -181,12 +181,33 @@ legend("top", inset=.05,
 
 # EQM_menor (a partir do aj2)
 #  step:   0.2   |  0.1  |  0.02
-# M       -0.4  |  -0.4 |  -0.46
-# N       -0.2  |  -0.2 |  -0.14
+# M       -0.4  |  -0.5 |  -0.46
+# N       -0.2  |  -0.1 |  -0.14
 # Original: -0.387 -0.442 
 
 M <- -0.46
 N <- -0.14
+
+arima_cross <- arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(M,N))
+EQM_Arima <- sum( (predict(arima_cross, 12)$pred - mortes_teste)^2 )/12
+EQM_Arima
+
+arima_pred <- predict(arima_cross, 24)$pred
+subset(arima_pred, start = 13)
+
+EQM_Arima_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
+EQM_Arima_prev
+
+{
+   plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+   lines(subset(arima_pred, end=12), col="red", lty=2)
+   lines(subset(arima_pred, start=13), col="red", lty=3)
+   legend("top", inset=.05,
+          c("Real","Arima_CV_teste", "Arima_prev"), lwd=1, lty=c(1,2,3), col=c("black","red","red"), bty="n") 
+}
+
+
+#/////////////// Resultado combinado //////////////////
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
 HW_pred_cross <- predict(hw_cross, 24, prediction.interval = T, level = 0.95)
