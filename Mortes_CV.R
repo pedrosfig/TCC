@@ -42,128 +42,128 @@ mortes_prev
 # 
 # EQM_menor
 # 
-# # step:  0.1  |  0.05  |  0.01  | 0.01 (mult)
-# A      # 0.1  |  0.10  |  0.09  |  0.09
-# B      # 0.4  |  0.35  |  0.38  |  0.39
-# C      # 0.7  |  0.80  |  0.82  |  0.80
+# step:  0.1  |  0.05  |  0.01  | 0.01 (mult)    |  0.01 (EAM)
+# A      # 0.1  |  0.10  |  0.09  |  0.09          |  0.12
+# B      # 0.4  |  0.35  |  0.38  |  0.39          |  0.31
+# C      # 0.7  |  0.80  |  0.82  |  0.80          |  0.77
 # # EQM_menor     #      | 30344  | 28750  
 
 
 
 # Cross-Validation - sem sazonalidade --------------------------------------------------
 
-niveis <- seq(from=0.01, to=1, by=0.01)
-n <- length(niveis)
-EQM_menor = 10^100
-
-for(i in 1:n){
-  a <- niveis[i]
-  for(j in 1:n){
-    b <- niveis[j]
-    hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=0)
-    EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-    if(EQM < EQM_menor){
-      EQM_menor <- EQM
-      A <- a
-      B <- b
-      C <- 0
-    }
-  }
-}
-
-EQM_menor
-# step:         0.01
-A           #    1
-B           #   0.02
-C           #    0
-EQM_menor   #  107233
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# EQM_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   for(j in 1:n){
+#     b <- niveis[j]
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=0)
+#     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+#     if(EQM < EQM_menor){
+#       EQM_menor <- EQM
+#       A <- a
+#       B <- b
+#       C <- 0
+#     }
+#   }
+# }
+# 
+# EQM_menor
+# # step:         0.01
+# A           #    1
+# B           #   0.02
+# C           #    0
+# EQM_menor   #  107233
 
 
 
 # Cross-Validation - sem tendencia - sazonalidade aditiva -----------------------------------------------
 
-niveis <- seq(from=0.01, to=1, by=0.01)
-n <- length(niveis)
-EQM_menor = 10^100
-
-for(i in 1:n){
-  a <- niveis[i]
-  for(j in 1:n){
-    c <- niveis[j]
-    hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "add")
-    EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-    if(EQM < EQM_menor){
-      EQM_menor <- EQM
-      A <- a
-      B <- 0
-      C <- c
-    }
-  }
-}
-
-EQM_menor
-# step:         0.01
-A           #    1
-B           #    0
-C           #   0.14
-EQM_menor   #  195075
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# EQM_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   for(j in 1:n){
+#     c <- niveis[j]
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "add")
+#     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+#     if(EQM < EQM_menor){
+#       EQM_menor <- EQM
+#       A <- a
+#       B <- 0
+#       C <- c
+#     }
+#   }
+# }
+# 
+# EQM_menor
+# # step:         0.01
+# A           #    1
+# B           #    0
+# C           #   0.14
+# EQM_menor   #  195075
 
 
 
 # Cross-Validation - sem tendencia - sazonalidade multiplicativa ------------------------------------
 
-niveis <- seq(from=0.01, to=1, by=0.01)
-n <- length(niveis)
-EQM_menor = 10^100
-
-for(i in 1:n){
-  a <- niveis[i]
-  for(j in 1:n){
-    c <- niveis[j]
-    hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "mult")
-    EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-    if(EQM < EQM_menor){
-      EQM_menor <- EQM
-      A <- a
-      B <- 0
-      C <- c
-    }
-  }
-}
-
-EQM_menor
-# step:         0.01
-A           #    1
-B           #    0
-C           #   0.46
-EQM_menor   #  221339
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# EQM_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   for(j in 1:n){
+#     c <- niveis[j]
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "mult")
+#     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+#     if(EQM < EQM_menor){
+#       EQM_menor <- EQM
+#       A <- a
+#       B <- 0
+#       C <- c
+#     }
+#   }
+# }
+# 
+# EQM_menor
+# # step:         0.01
+# A           #    1
+# B           #    0
+# C           #   0.46
+# EQM_menor   #  221339
 
 
 
 # Cross-Validation - sem tendencia e sem sazonalidade ------------------------------------------
 
-niveis <- seq(from=0.01, to=1, by=0.01)
-n <- length(niveis)
-EQM_menor = 10^100
-
-for(i in 1:n){
-  a <- niveis[i]
-  hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=0)
-  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-  if(EQM < EQM_menor){
-    EQM_menor <- EQM
-    A <- a
-    B <- 0
-    C <- 0
-  }
-}
-
-EQM_menor
-# step:         0.01
-A           #    1
-B           #    0
-C           #    0
-EQM_menor   #  195075
+# niveis <- seq(from=0.01, to=1, by=0.01)
+# n <- length(niveis)
+# EQM_menor = 10^100
+# 
+# for(i in 1:n){
+#   a <- niveis[i]
+#   hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=0)
+#   EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+#   if(EQM < EQM_menor){
+#     EQM_menor <- EQM
+#     A <- a
+#     B <- 0
+#     C <- 0
+#   }
+# }
+# 
+# EQM_menor
+# # step:         0.01
+# A           #    1
+# B           #    0
+# C           #    0
+# EQM_menor   #  195075
 
 
 
