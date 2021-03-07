@@ -3,8 +3,32 @@ library("openxlsx")
 library(smooth)
 require(graphics)
 require(latex)
+require(forecast)
 
- 
+##############
+SES = arima.sim(list(order = c(0,1,1), ma = 0.7), n = 200) #Suavização exponencial simples (so com A diferete de 0)
+ts.plot(SES)
+auto.arima(SES)
+
+TA = arima.sim(list(order = c(0,2,2), ma = c(-0.2279, 0.2488)), n = 200) #Tendência aditiva, tem A e B
+ts.plot(TA)
+auto.arima(TA)
+
+#Sazonalidade (p = 3 meses)
+p = 3
+TSA = arima.sim(list(order = c(0,1,p+1), ma = c(-0.2279, 0.2488),order=c(0,1,0)), n = 200) #Tendência e sazonalidade aditiva, tem A e B e C
+
+SARIMA(0,1,p+ 1)×(0,1,0)p
+
+#######limitação pq aparentemente a ordem do MA tem q ser menor que a ordem do seasonal####
+sarima.sim(ar = NULL, d = 1, ma = c(-0.3,.4,.2,.1), sar = NULL, D = 1, sma = NULL, S = 3, n = 200)
+sarima.sim(ar = NULL, d = 1, ma = c(-0.3,.4,.2), sar = NULL, D = 1, sma = NULL, S = 3, n = 200)
+
+
+######sim_sarima nao ta funcionando######
+x=sim_sarima(n = 144, model = list(sma = 0.4, ma = 0.4, sar = 0.8, ar = 0.5,nseasons = 12, sigma2 = 1), xintercept = 1:144)
+
+
 #####Period#####
 mult_p = rep(NA,60)
 for (i in 1:60){mult_p[i] = cos(pi*i/6)}
