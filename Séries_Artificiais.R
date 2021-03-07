@@ -1,24 +1,75 @@
 library(forecast)
-library("openxlsx")
+library(openxlsx)
 library(smooth)
-require(graphics)
-require(latex)
-require(forecast)
+library(graphics)
+library(forecast)
+library(astsa)
 
-##############
-SES = arima.sim(list(order = c(0,1,1), ma = 0.7), n = 200) #Suavização exponencial simples (so com A diferete de 0)
-ts.plot(SES)
+# Suavização exponencial simples (so com A diferente de 0)
+SES = arima.sim(list(order = c(0,1,1), ma = 0.7), n = 200)
+plot.ts(SES, bty="n")
 auto.arima(SES)
 
-TA = arima.sim(list(order = c(0,2,2), ma = c(-0.2279, 0.2488)), n = 200) #Tendência aditiva, tem A e B
+HW_SES <- HoltWinters(SES, beta = FALSE, gamma = FALSE)
+plot(HW_SES, bty="n")
+erro_SES <- HW_SES$fitted[,1] - SES
+plot(erro_SES)
+qqnorm(erro_SES)
+qqline(erro_SES)
+
+# treino e teste - uma bosta!
+
+SES_treino <- subset(SES, end = 170)
+SES_treino
+SES_teste <- subset(SES, start = 171)
+SES_teste
+
+HW_SES_tt <- HoltWinters(SES_treino, beta = FALSE, gamma = FALSE)
+plot.ts(SES)
+lines(HW_SES_tt$fitted[,1], col="red")
+lines(predict(HW_SES_tt, 31), col="blue")
+
+
+
+
+
+# Tendência aditiva, tem A e B
+TA = arima.sim(list(order = c(0,2,2), ma = c(-0.2279, 0.2488)), n = 200) 
 ts.plot(TA)
 auto.arima(TA)
+
+HW_TA <- HoltWinters(TA, gamma = FALSE)
+plot(HW_TA, bty="n")
+erro_TA <- HW_TA$fitted[,1] - TA
+plot(erro_TA)
+qqnorm(erro_TA)
+qqline(erro_TA)
+
+# treino e teste - maravilhoso!
+
+TA_treino <- subset(TA, end = 170)
+TA_treino
+TA_teste <- subset(TA, start = 171)
+TA_teste
+
+HW_TA_tt <- HoltWinters(TA_treino, gamma = FALSE)
+plot.ts(TA, lwd=2)
+lines(HW_TA_tt$fitted[,1], col="red", lty = 2, lwd=2)
+lines(predict(HW_TA_tt, 31), col="blue", lty = 2, lwd=2)
+
+
+
+
+
+
+
+
 
 #Sazonalidade (p = 3 meses)
 p = 3
 TSA = arima.sim(list(order = c(0,1,p+1), ma = c(-0.2279, 0.2488),order=c(0,1,0)), n = 200) #Tendência e sazonalidade aditiva, tem A e B e C
 
-SARIMA(0,1,p+ 1)×(0,1,0)p
+#SARIMA(0,1,p+ 1)×(0,1,0)p
 
 #######limitação pq aparentemente a ordem do MA tem q ser menor que a ordem do seasonal####
 sarima.sim(ar = NULL, d = 1, ma = c(-0.3,.4,.2,.1), sar = NULL, D = 1, sma = NULL, S = 3, n = 200)
@@ -27,6 +78,12 @@ sarima.sim(ar = NULL, d = 1, ma = c(-0.3,.4,.2), sar = NULL, D = 1, sma = NULL, 
 
 ######sim_sarima nao ta funcionando######
 x=sim_sarima(n = 144, model = list(sma = 0.4, ma = 0.4, sar = 0.8, ar = 0.5,nseasons = 12, sigma2 = 1), xintercept = 1:144)
+
+
+
+
+
+
 
 
 #####Period#####
