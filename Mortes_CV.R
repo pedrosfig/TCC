@@ -60,7 +60,7 @@ mortes_prev
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     b <- niveis[j]
-#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=0)
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=b, gamma=FALSE)
 #     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -71,12 +71,10 @@ mortes_prev
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01
-# A           #    1
-# B           #   0.02
-# C           #    0
-# EQM_menor   #  107233
+# A           #    1    |   0.49
+# B           #   0.02  |   0.98
+# C           #    0    |  FALSE
+# EQM_menor   #  107233 | 649663
 
 
 
@@ -90,7 +88,7 @@ mortes_prev
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     c <- niveis[j]
-#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "add")
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=FALSE, gamma=c, seasonal = "add")
 #     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -101,12 +99,10 @@ mortes_prev
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01
-# A           #    1
-# B           #    0
-# C           #   0.14
-# EQM_menor   #  195075
+# A           #    1    |  0.02
+# B           #    0    | FALSE
+# C           #   0.14  |  0.40
+# EQM_menor   #  195075 | 36971
 
 
 
@@ -120,7 +116,7 @@ mortes_prev
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     c <- niveis[j]
-#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=c, seasonal = "mult")
+#     hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=FALSE, gamma=c, seasonal = "mult")
 #     EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -131,12 +127,10 @@ mortes_prev
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01
-# A           #    1
-# B           #    0
-# C           #   0.46
-# EQM_menor   #  221339
+# A           #    1    |  0.02
+# B           #    0    | FALSE
+# C           #   0.46  |  0.40
+# EQM_menor   #  221339 | 38804
 
 
 
@@ -148,7 +142,7 @@ mortes_prev
 # 
 # for(i in 1:n){
 #   a <- niveis[i]
-#   hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=0, gamma=0)
+#   hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=FALSE, gamma=FALSE)
 #   EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
 #   if(EQM < EQM_menor){
 #     EQM_menor <- EQM
@@ -158,12 +152,10 @@ mortes_prev
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01
-# A           #    1
-# B           #    0
-# C           #    0
-# EQM_menor   #  195075
+# A           #    1    |  0.70  |     1    |  0.90
+# B           #    0    | FALSE  |     0    | FALSE
+# C           #    0    |   0    |   FALSE  | FALSE
+# EQM_menor   #  195075 | 130478 | 46547827 | 817906
 
 
 

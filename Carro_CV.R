@@ -58,7 +58,7 @@ carro_teste
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     b <- niveis[j]
-#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=0)
+#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=b, gamma=FALSE)
 #     EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -69,12 +69,10 @@ carro_teste
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01 
-# A           #   0.18  
-# B           #   0.76  
-# C           #    0
-# EQM_menor   #  14618 
+# A           #   0.18  |  0.11
+# B           #   0.76  |  0.78
+# C           #    0    | FALSE
+# EQM_menor   #  14618  | 17731
 
 
 
@@ -88,7 +86,7 @@ carro_teste
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     c <- niveis[j]
-#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=0, gamma=c, seasonal = "add")
+#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=FALSE, gamma=c, seasonal = "add")
 #     EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -99,12 +97,10 @@ carro_teste
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01 
-# A           #   0.20
-# B           #    0
-# C           #   0.22
-# EQM_menor   #   2291
+# A           #   0.20  |  0.06
+# B           #    0    | FALSE 
+# C           #   0.22  |  0.30
+# EQM_menor   #   2291  |  1370
 
 
 
@@ -118,7 +114,7 @@ carro_teste
 #   a <- niveis[i]
 #   for(j in 1:n){
 #     c <- niveis[j]
-#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=0, gamma=c, seasonal = "mult")
+#     hw_cross <- HoltWinters(carro_treino, alpha=a, beta=FALSE, gamma=c, seasonal = "mult")
 #     EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #     if(EQM < EQM_menor){
 #       EQM_menor <- EQM
@@ -129,12 +125,10 @@ carro_teste
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01 
-# A           #   0.19
-# B           #    0
-# C           #   0.35
-# EQM_menor   #   2107
+# A           #   0.19  |  0.06
+# B           #    0    | FALSE
+# C           #   0.35  |  0.35
+# EQM_menor   #   2107  |  2505
 
 
 
@@ -146,7 +140,7 @@ carro_teste
 # 
 # for(i in 1:n){
 #   a <- niveis[i]
-#   hw_cross <- HoltWinters(carro_treino, alpha=a, beta=0, gamma=0)
+#   hw_cross <- HoltWinters(carro_treino, alpha=a, beta=FALSE, gamma=FALSE)
 #   EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 #   if(EQM < EQM_menor){
 #     EQM_menor <- EQM
@@ -156,12 +150,10 @@ carro_teste
 #   }
 # }
 # 
-# EQM_menor
-# # step:         0.01 
-# A           #   0.25
-# B           #    0
-# C           #    0
-# EQM_menor   #  14649
+# A           #   0.25  |  0.11  |    1    |  0.19
+# B           #    0    | FALSE  |    0    | FALSE
+# C           #    0    |   0    |  FALSE  | FALSE
+# EQM_menor   #  14649  | 17046  | 1662480 | 44370
 
 
 
