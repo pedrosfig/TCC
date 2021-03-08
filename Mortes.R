@@ -218,7 +218,7 @@ ypred_cross = pred_cross$pred
 qinf_cross= ypred_cross - qnorm(.975)*pred_cross$se
 qsup_cross= ypred_cross + qnorm(.975)*pred_cross$se
 
-{plot.ts(mortes, ylim=c(6000, 12000), main = "Holt Winters: Mortes", bty="n")
+{plot.ts(mortes, ylim=c(6000, 12000), bty="n")
       lines(HW_pred_cross[,1], col="red", lty=1)      # HW_pred fit
       lines(HW_pred_cross[,2], col="red", lty=3)      # HW_pred upr
       lines(HW_pred_cross [,3], col="red", lty=3)      # HW_pred lwr
