@@ -35,16 +35,16 @@ arima_mortes_treino
 
 
 # ACF e PACF
-acf(ts(mortes_treino), lag.max = 36,main = "")   #(AR(1)),12(AR(1))
-pacf(ts(mortes_treino), lag.max = 36,main = "")
+acf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n')   #(AR(1)),12(AR(1))
+pacf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n')
 
 serie_diff=ts(diff(mortes_treino,lag = 1))
-acf(serie_diff, lag.max = 36,main = "")
-pacf(serie_diff, lag.max = 36,main = "")
+acf(serie_diff, lag.max = 36,main = "",bty = 'n')
+pacf(serie_diff, lag.max = 36,main = "",bty = 'n')
 
 serie_diff12 = diff(serie_diff, lag = 12)
-acf(serie_diff12, lag.max = 36,main = "")
-pacf(serie_diff12, lag.max = 36,main = "")
+acf(serie_diff12, lag.max = 36,main = "",bty = 'n')
+pacf(serie_diff12, lag.max = 36,main = "",bty = 'n')
 
 aj1 = arima(mortes_treino,c(1,0,0),seasonal = list(order=c(1,0,0),period = 12))
 aj2 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12)) 
