@@ -22,14 +22,18 @@ C <- 0.82
 # seasonal = add
 
 hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
-EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
-EQM
+EQM_HW <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+EQM_HW
 
 hw_pred <- predict(hw_cross, 24)
 subset(hw_pred, start = 13)
 
-EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
-EQM_prev
+EQM_HW_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
+EQM_HW_prev
+
+EAM_HW_pred <- sum( abs(subset(hw_pred, start = 13) - mortes_prev) )/12
+EAM_HW_pred
+
 
 {
   plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
@@ -65,20 +69,52 @@ nu_2 <- floor(k/N) * ( C^2*(1-A)^2 + A*C*(1-A)*(2 + N*B*(floor(k/N)+1)) )
 nu <- nu_1 + nu_2
 nu
 
-z <- qnorm(0.95)
+z <- qnorm(0.975)
 
 interval <- z * sqrt(nu*v)
 
 hw_sup <- hw_pred + interval
 hw_inf <- hw_pred - interval
 
+
+
+# SARIMA
+
+M <- -0.46
+N <- -0.14
+
+arima_cross <- arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(M,N))
+EQM_Arima <- sum( (predict(arima_cross, 12)$pred - mortes_teste)^2 )/12
+EQM_Arima
+
+arima_pred <- predict(arima_cross, 24)
+subset(arima_pred$pred, start = 13)
+
+EQM_Arima_prev <- sum( (subset(arima_pred$pred, start = 13) - mortes_prev)^2 )/12
+EQM_Arima_prev
+
+EAM_Arima_prev <- sum( abs(subset(arima_pred$pred, start = 13) - mortes_prev) )/12
+EAM_Arima_prev
+
+
+ypred_cross = arima_pred$pred
+qinf_cross= ypred_cross - qnorm(.975)*arima_pred$se
+qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
+
+
+
+
 {
-  plot.ts(subset(mortes, start=36), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
-  lines(subset(hw_pred, end=12), col="blue", lty=2)
-  lines(subset(hw_pred, start=13), col="blue", lty=3)
-  lines(hw_sup, col="cyan")
-  lines(hw_inf, col="cyan")
-  legend("top", inset=.05,
-         c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+  plot.ts(subset(mortes, start=37), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
+  lines(subset(hw_pred, end=12), col="blue")
+  lines(subset(hw_pred, start=13), col="blue")
+  lines(hw_sup, col="blue", lty=3)
+  lines(hw_inf, col="blue", lty=3)
+  lines(subset(arima_pred$pred, end=12), col="red")
+  lines(subset(arima_pred$pred, start=13), col="red")
+  lines(qinf_cross,col='red', lty=3)
+  lines(qsup_cross,col='red', lty=3)
+  legend("topleft", inset=.05,
+         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
 }
 
