@@ -107,7 +107,7 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 
 
-
+########com intervalo de confiança##########
 {
   plot.ts(subset(mortes, start=37), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
   lines(hw_pred, col="blue")
@@ -120,4 +120,31 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
          c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
 }
 
+
+########sem intervalo de confiança##########
+{
+  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  lines(subset(hw_pred, end=12), col="blue", lty=2)
+  lines(subset(hw_pred, start=13),col = "blue", lty=3)
+  lines(subset(arima_pred$pred,end = 12), col="red", lty=2)
+  lines(subset(arima_pred$pred,start = 13), col="red", lty=3)
+  legend("topleft", inset=.05,
+         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
+}
+
+
+
+
+erros_arima <- arima_cross$residuals[13:48]# anos de 1974 a 1976 (primeiro ano nao ajusta)
+plot(erros_arima, type="p")          # aparentam ser correlacionados
+
+qqnorm(erros_arima, bty="n")#, main = "")
+qqline(erros_arima)        # normalidade relativamente ok
+
+v <- var(erros_arima)
+
+e_1 <- as.vector(erros_arima[2:36])
+e_2 <- as.vector(erros_arima[1:35])
+cor(e_1,e_2)
+acf(erros_arima)
 

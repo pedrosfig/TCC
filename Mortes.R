@@ -50,23 +50,26 @@ aj1 = arima(mortes_treino,c(1,0,0),seasonal = list(order=c(1,0,0),period = 12))
 aj2 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12)) 
 aj3 = arima(mortes_treino,c(1,1,0),seasonal = list(order=c(0,1,0),period = 12))
 aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))  # igual ao auto.arima
+aj5 = arima(mortes_treino,c(0,1,13),seasonal = list(order=c(0,1,0),period = 12))
 
 EQM_aj1 <- sum((predict(aj1, 24)$pred - mortes_teste)^2)/24
 EQM_aj2 <- sum((predict(aj2, 24)$pred - mortes_teste)^2)/24
 EQM_aj3 <- sum((predict(aj3, 24)$pred - mortes_teste)^2)/24
 EQM_aj4 <- sum((predict(aj4, 24)$pred - mortes_teste)^2)/24
+EQM_aj5 <- sum((predict(aj5, 24)$pred - mortes_teste)^2)/24
 
 EAM_aj1 <- sum(abs(predict(aj1, 24)$pred - mortes_teste))/24
 EAM_aj2 <- sum(abs(predict(aj2, 24)$pred - mortes_teste))/24
 EAM_aj3 <- sum(abs(predict(aj3, 24)$pred - mortes_teste))/24
 EAM_aj4 <- sum(abs(predict(aj4, 24)$pred - mortes_teste))/24
+EAM_aj5 <- sum(abs(predict(aj5, 24)$pred - mortes_teste))/24
 
 
-AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4))
-BICs <- c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4))
-EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4)
-EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4)
-ajuste <- c("aj1", "aj2", "aj3", "aj4")
+AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4),AIC(aj5))
+BICs <- c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4),BIC(aj5))
+EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4,EQM_aj5)
+EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4,EAM_aj5)
+ajuste <- c("aj1", "aj2", "aj3", "aj4","aj5")
 data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)
 
 
