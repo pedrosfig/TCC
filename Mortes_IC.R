@@ -36,10 +36,10 @@ EAM_HW_pred
 
 
 {
-  plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
-  legend("top", inset=.05,
+  legend("topleft", inset=.05,
          c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
@@ -52,11 +52,15 @@ original <- subset(mortes_treino, start = 13)
 erros <- fitted - original
 plot(erros, type="p")          # aparentam ser correlacionados
 
-qqnorm(erros)
+qqnorm(erros, bty="n")#, main = "")
 qqline(erros)        # normalidade relativamente ok
 
 v <- var(erros)
 
+e_1 <- as.vector(subset(erros, start = 2))
+e_2 <- as.vector(subset(erros, end = 35))
+cor(e_1,e_2)
+acf(erros)
 
 # soma de nu_i^2
 
@@ -106,15 +110,14 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 {
   plot.ts(subset(mortes, start=37), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
-  lines(subset(hw_pred, end=12), col="blue")
-  lines(subset(hw_pred, start=13), col="blue")
+  lines(hw_pred, col="blue")
   lines(hw_sup, col="blue", lty=3)
   lines(hw_inf, col="blue", lty=3)
-  lines(subset(arima_pred$pred, end=12), col="red")
-  lines(subset(arima_pred$pred, start=13), col="red")
+  lines(arima_pred$pred, col="red")
   lines(qinf_cross,col='red', lty=3)
   lines(qsup_cross,col='red', lty=3)
   legend("topleft", inset=.05,
          c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
 }
+
 

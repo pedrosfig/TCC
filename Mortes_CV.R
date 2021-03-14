@@ -178,10 +178,10 @@ EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_prev
 
 {
-  plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
-  legend("top", inset=.05,
+  legend("topleft", inset=.05,
          c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
