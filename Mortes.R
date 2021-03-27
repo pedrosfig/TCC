@@ -70,7 +70,7 @@ EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4,EQM_aj5)
 EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4,EAM_aj5)
 ajuste <- c("aj1", "aj2", "aj3", "aj4","aj5")
 data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)
-
+ 
 
 #podemos ver que o ajuste com menores erros é o 4 (auto.arima)
 
