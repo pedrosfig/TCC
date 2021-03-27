@@ -177,6 +177,9 @@ subset(hw_pred, start = 13)
 EQM_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_prev
 
+EAM_prev <- sum( abs(subset(hw_pred, start = 13) - mortes_prev) )/12
+EAM_prev
+
 {
   plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
