@@ -7,7 +7,6 @@ library(pastecs)
 mortes <- datasets::USAccDeaths
 plot.ts(mortes, bty="n", ylab="Mortes")
 length(mortes)
-trend.test(mortes)
 
 fit <- auto.arima(mortes)
 fit
@@ -52,17 +51,17 @@ aj3 = arima(mortes_treino,c(1,1,0),seasonal = list(order=c(0,1,0),period = 12))
 aj4 = arima(mortes_treino,c(0,1,1),seasonal = list(order=c(1,1,0),period = 12))  # igual ao auto.arima
 aj5 = arima(mortes_treino,c(0,1,13),seasonal = list(order=c(0,1,0),period = 12))
 
-EQM_aj1 <- sum((predict(aj1, 24)$pred - mortes_teste)^2)/24
-EQM_aj2 <- sum((predict(aj2, 24)$pred - mortes_teste)^2)/24
-EQM_aj3 <- sum((predict(aj3, 24)$pred - mortes_teste)^2)/24
-EQM_aj4 <- sum((predict(aj4, 24)$pred - mortes_teste)^2)/24
-EQM_aj5 <- sum((predict(aj5, 24)$pred - mortes_teste)^2)/24
+EQM_aj1 <- sum((predict(aj1, 12)$pred - mortes_teste)^2)/12
+EQM_aj2 <- sum((predict(aj2, 12)$pred - mortes_teste)^2)/12
+EQM_aj3 <- sum((predict(aj3, 12)$pred - mortes_teste)^2)/12
+EQM_aj4 <- sum((predict(aj4, 12)$pred - mortes_teste)^2)/12
+EQM_aj5 <- sum((predict(aj5, 12)$pred - mortes_teste)^2)/12
 
-EAM_aj1 <- sum(abs(predict(aj1, 24)$pred - mortes_teste))/24
-EAM_aj2 <- sum(abs(predict(aj2, 24)$pred - mortes_teste))/24
-EAM_aj3 <- sum(abs(predict(aj3, 24)$pred - mortes_teste))/24
-EAM_aj4 <- sum(abs(predict(aj4, 24)$pred - mortes_teste))/24
-EAM_aj5 <- sum(abs(predict(aj5, 24)$pred - mortes_teste))/24
+EAM_aj1 <- sum(abs(predict(aj1, 12)$pred - mortes_teste))/12
+EAM_aj2 <- sum(abs(predict(aj2, 12)$pred - mortes_teste))/12
+EAM_aj3 <- sum(abs(predict(aj3, 12)$pred - mortes_teste))/12
+EAM_aj4 <- sum(abs(predict(aj4, 12)$pred - mortes_teste))/12
+EAM_aj5 <- sum(abs(predict(aj5, 12)$pred - mortes_teste))/12
 
 
 AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4),AIC(aj5))
