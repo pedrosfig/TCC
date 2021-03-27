@@ -62,7 +62,7 @@ EAM_aj2 <- sum(abs(predict(aj2, 12)$pred - mortes_teste))/12
 EAM_aj3 <- sum(abs(predict(aj3, 12)$pred - mortes_teste))/12
 EAM_aj4 <- sum(abs(predict(aj4, 12)$pred - mortes_teste))/12
 EAM_aj5 <- sum(abs(predict(aj5, 12)$pred - mortes_teste))/12
-
+ 
 
 AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4),AIC(aj5))
 BICs <- c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4),BIC(aj5))
