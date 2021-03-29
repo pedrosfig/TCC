@@ -1,19 +1,14 @@
 Fazer:
 
-# Intervalos de Confiança - se n tiver - outros modelos - dlm (modelo normal -> pacote)
-# Além do EQM, usar erro absoluto médio (EAM)
+## Dados - analise exploratoria p mostrar sazonalidade (series temporais)
 
-# Carro- estudo preliminar pra entender parâmetros (apresentação/ilustração do método)
 
-# Mortes: Separar dados em 3 (treino, teste e previsão) e comparar HW com Arima (conjunto de dados final) - outra coisa
-# Colocar no gráfico previsão
-
+Desistimos:
 # Gerar dados de séries temporais e ajustar com HW
 # Gerar dados com comportamento esperado (queda no nivel ou mudança da sazonalidade)
 
-# Cross-Validation pros parametros do SARIMA
 
-
+Regra:
 # HW - azul
 # SARIMA - vermelho
 
@@ -25,29 +20,10 @@ Fazer:
 
 # LaTeX: relatório (primeiro) e apresentação (por último)
 
-# LaTeX: esboço de índice
-# LaTeX: explicar HoltWinters
-# LaTeX: explicar SARIMA
-# LaTeX: explicar dados
-# LaTeX: explicar efeitos dos parametros do SARIMA
-# LaTeX: explicar efeitos dos parametros do HW
-## colocar suavização exponencial? (para explicar o parâmetro alpha sozinho)
+
 # LaTeX: 
 ## só numerar equações usadas no texto depois
 ## Introdução - revisao de literatura pra botar referencias de outros métodos também (inclusive bayesianos)
-## Função Holt-Winters no cap de HW
 ## Dados - analise exploratoria p mostrar sazonalidade (series temporais)
-## Dados_1 + resultado_1
-## Dados_2 + resultado_2
-## (capitulo unico de aplicação ou um cap pra cada aplicação - se forem diferentes)
 
 
-Feito:
-
-# Plotar grafico com os resultados, com o valor dos erros. 
-# Fazer o arima sem o usar a função Auto.arima, mas por conta propria.
-# Mostrar o Plot com cada um dos Alfas Betas e Gamas e explicar o efeito. Falta explicarmos os efeitos e interpretar. 
-
-# Português - trocar SSE por SEQ (EQM) - trocar pra média
-# plot(bty="n")
-# "expression(paste(gamma, "= 0.35"))" pra escrever as letras gregas
