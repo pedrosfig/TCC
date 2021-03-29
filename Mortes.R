@@ -149,11 +149,11 @@ EQM_Holt_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Holt_prev
 
 {
-plot.ts(mortes, ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
 lines(subset(hw_pred, end=12), col="blue", lty=2)
 lines(subset(hw_pred, start=13), col="blue", lty=3)
 legend("top", inset=.05,
-       c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+       c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
 
@@ -163,10 +163,10 @@ legend("top", inset=.05,
 # teste = arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(-0.3868365,-0.4418667) )
 # teste$coef
 
-  niveis <- seq(from= -1, to=1, by=0.02)
-  l <- length(niveis)
-  EQM_menor = 10^100
-
+# niveis <- seq(from= -1, to=1, by=0.02)
+# l <- length(niveis)
+# EQM_menor = 10^100
+# 
 #  for(i in 1:l){
 #    m <- niveis[i]
 #    for(j in 1:l){
@@ -205,44 +205,7 @@ EQM_Arima_prev
    lines(subset(arima_pred, end=12), col="red", lty=2)
    lines(subset(arima_pred, start=13), col="red", lty=3)
    legend("topleft", inset=.05,
-          c("Real","SARIMA_CV_teste", "SARIMA_prev"), lwd=1, lty=c(1,2,3), col=c("black","red","red"), bty="n") 
-}
-
-
-#/////////////// Resultado combinado //////////////////
-
-hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=C, seasonal = "add")
-HW_pred_cross <- predict(hw_cross, 24, prediction.interval = T, level = 0.95)
-
-arima_cross <- arima(mortes_treino,c(0,1,1),seasonal = list(order = c(1,1,0),period = 12),fixed = c(M,N))
-pred_cross = predict(arima_cross, 24)
-ypred_cross = pred_cross$pred
-qinf_cross= ypred_cross - qnorm(.975)*pred_cross$se
-qsup_cross= ypred_cross + qnorm(.975)*pred_cross$se
-
-{plot.ts(mortes, ylim=c(6000, 12000), bty="n")
-      lines(HW_pred_cross[,1], col="red", lty=1)      # HW_pred fit
-      lines(HW_pred_cross[,2], col="red", lty=3)      # HW_pred upr
-      lines(HW_pred_cross [,3], col="red", lty=3)      # HW_pred lwr
-      lines(predict(arima_cross, 24)$pred,col = 'blue', lty=1)
-      lines(qinf_cross,col = 'blue', lty=3)
-      lines(qsup_cross,col = 'blue', lty=3)
-      legend("top", inset=.05,
-             c("Real","HW_CV", "SARIMA"), lwd=1, lty=c(1,2,2), col=c("black","red", "blue"), bty="n") 
-}
-
-EQM_HW_CV <- sum((predict(hw_cross, 24) - mortes_teste)^2)/24                       # HW Cross-Validation
-EQM_arima_auto <- sum((predict(arima_mortes_treino, 24)$pred - mortes_teste)^2)/24  # ARIMA automatico
-EQM_HW_auto <- sum((predict(hw_mortes_treino, 24) - mortes_teste)^2)/24             # HW automatico
-
-cbind(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto)
-
-{plot(c(EQM_HW_CV, EQM_arima_auto, EQM_HW_auto), col=c("green","dark orange","red"), type = "p", main = "Erro de Teste", ylab="EQM", bty="n")
-      legend("top", inset=.05, c("HW Cross-Validation", "ARIMA automatico","HW automatico"), lty = 1, 
-             col=c("green","dark orange","red"), bty="n") 
-
-      segments(x0=1, y0=EQM_HW_CV, x1=2, y1=EQM_arima_auto, lty=3)
-      segments(x0=2, y0=EQM_arima_auto, x1=3, y1=EQM_HW_auto, lty=3)
+          c("Real","SARIMA_teste", "SARIMA_prev"), lwd=1, lty=c(1,2,3), col=c("black","red","red"), bty="n") 
 }
 
 

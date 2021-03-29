@@ -40,7 +40,7 @@ EAM_HW_pred
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
   legend("topleft", inset=.05,
-         c("Real","HW_CV_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+         c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
 
@@ -107,7 +107,7 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 
 
-########com intervalo de confiança##########
+######## Com intervalo de confiança ##########
 {
   plot.ts(subset(mortes, start=37), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
   lines(hw_pred, col="blue")
@@ -121,7 +121,7 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 }
 
 
-########sem intervalo de confiança##########
+######## Sem intervalo de confiança ##########
 {
   plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
@@ -136,7 +136,7 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 
 erros_arima <- arima_cross$residuals[13:48]# anos de 1974 a 1976 (primeiro ano nao ajusta)
-plot(erros_arima, type="p")          # aparentam ser correlacionados
+plot(erros_arima, type="p")          # aparentam ser não correlacionados
 
 qqnorm(erros_arima, bty="n")#, main = "")
 qqline(erros_arima)        # normalidade relativamente ok

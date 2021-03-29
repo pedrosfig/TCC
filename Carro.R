@@ -136,7 +136,7 @@ EQM
 plot.ts(carro, ylim=c(500, 2500), xlim=c(1983, 1985), bty="n", ylab = "Acidentes")
   lines(predict(hw_cross, 12), col="blue", lty=2)
   legend("top", inset=.05,
-         c("Real","HW_CV"), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+         c("Real","HW_teste"), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 }
 
 
