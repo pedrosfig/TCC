@@ -149,10 +149,10 @@ EQM_Holt_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Holt_prev
 
 {
-plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
 lines(subset(hw_pred, end=12), col="blue", lty=2)
 lines(subset(hw_pred, start=13), col="blue", lty=3)
-legend("top", inset=.05,
+legend(x=1976.5,y=10800,cex = 0.9,
        c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
@@ -201,10 +201,10 @@ EQM_Arima_prev <- sum( (subset(arima_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Arima_prev
 
 {
-   plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+   plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
    lines(subset(arima_pred, end=12), col="red", lty=2)
    lines(subset(arima_pred, start=13), col="red", lty=3)
-   legend("topleft", inset=.05,
+   legend(x = 1976.46,y=10800,cex=0.8,
           c("Real","SARIMA_teste", "SARIMA_prev"), lwd=1, lty=c(1,2,3), col=c("black","red","red"), bty="n") 
 }
 

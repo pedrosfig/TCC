@@ -36,10 +36,10 @@ EAM_HW_pred
 
 
 {
-  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
-  legend("topleft", inset=.05,
+  legend(x=1976.5,y=10800,cex=0.9,
          c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
 }
 
@@ -123,12 +123,12 @@ qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 ######## Sem intervalo de confiança ##########
 {
-  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13),col = "blue", lty=3)
   lines(subset(arima_pred$pred,end = 12), col="red", lty=2)
   lines(subset(arima_pred$pred,start = 13), col="red", lty=3)
-  legend("topleft", inset=.05,
+  legend(x=1976.5,y=10800,cex=0.9,
          c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
 }
 

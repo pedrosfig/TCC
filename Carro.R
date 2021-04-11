@@ -16,6 +16,8 @@ Seatbelts
 plot.ts(Seatbelts)
 
 
+
+
 plot.ts(Seatbelts[,5], bty="n", ylab="Kms")  # kms
 
 
@@ -133,7 +135,7 @@ EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 EQM
 
 {
-plot.ts(carro, ylim=c(500, 2500), xlim=c(1983, 1985), bty="n", ylab = "Acidentes")
+plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985), bty="n", ylab = "Acidentes")
   lines(predict(hw_cross, 12), col="blue", lty=2)
   legend("top", inset=.05,
          c("Real","HW_teste"), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
@@ -254,22 +256,22 @@ HW_alpha_4 <- HoltWinters(carro_treino, alpha=0.8, beta=B, gamma=C, seasonal = "
 {windows()
 par(mfrow = c(2,2))
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_alpha_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
@@ -289,22 +291,22 @@ HW_beta_4 <- HoltWinters(carro_treino, alpha=A, beta=0.8, gamma=C, seasonal = "a
 {windows()
 par(mfrow = c(2,2))
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_beta_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_beta_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_beta_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_beta_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
@@ -323,22 +325,22 @@ HW_gama_4 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.8, seasonal = "a
 {windows()
 par(mfrow = c(2,2))
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_gama_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_gama_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_gama_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
 
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
 lines(predict(HW_gama_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
