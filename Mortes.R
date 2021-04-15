@@ -34,16 +34,22 @@ arima_mortes_treino
 
 
 # ACF e PACF
-acf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n')   #(AR(1)),12(AR(1))
-pacf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n')
+acf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n',ylab = 'FAC')   #(AR(1)),12(AR(1))
+legend(x="topright",cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
+pacf(ts(mortes_treino), lag.max = 36,main = "",bty = 'n',ylab = 'FACP')
+legend(x="topright",cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
 
 serie_diff=ts(diff(mortes_treino,lag = 1))
-acf(serie_diff, lag.max = 36,main = "",bty = 'n')
-pacf(serie_diff, lag.max = 36,main = "",bty = 'n')
+acf(serie_diff, lag.max = 36,main = "",bty = 'n',ylab = 'FAC')
+legend(x="topright",cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
+pacf(serie_diff, lag.max = 36,main = "",bty = 'n',ylab = 'FACP')
+legend(x=20,y=0.3,cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
 
 serie_diff12 = diff(serie_diff, lag = 12)
-acf(serie_diff12, lag.max = 36,main = "",bty = 'n')
-pacf(serie_diff12, lag.max = 36,main = "",bty = 'n')
+acf(serie_diff12, lag.max = 36,main = "",bty = 'n',ylab = 'FAC')
+legend(x="topright",cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
+pacf(serie_diff12, lag.max = 36,main = "",bty = 'n',ylab = 'FACP')
+legend(x="topright",cex=0.9,c("Correlação","Linha de Significância"), lwd=1, lty=1, col=c("black","blue"), bty="n") 
 
 aj1 = arima(mortes_treino,c(1,0,0),seasonal = list(order=c(1,0,0),period = 12))
 aj2 = arima(mortes_treino,c(0,1,0),seasonal = list(order=c(1,0,0),period = 12)) 
