@@ -1,24 +1,19 @@
 library(datasets)
 library(forecast)
-library(stats)
-library(pastecs)
+#library(stats)
+#library(pastecs)
 
 ?UKDriverDeaths
 carro <- datasets::UKDriverDeaths
-plot.ts(carro, bty="n", ylab="Acidentes")
+plot.ts(carro, bty="n", ylab="Acidentes", xlab="Ano")   # Carro.jpeg
 length(carro)
 #trend.test(carro)
 
 # Seatbelts
-?Seatbelts
-
-Seatbelts
-plot.ts(Seatbelts)
-
-
-
-
-plot.ts(Seatbelts[,5], bty="n", ylab="Kms")  # kms
+# ?Seatbelts
+# Seatbelts
+# plot.ts(Seatbelts)
+# plot.ts(Seatbelts[,5], bty="n", ylab="Kms")  # kms
 
 
 
@@ -135,12 +130,14 @@ EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
 EQM
 
 {
-plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985), bty="n", ylab = "Acidentes")
+  marks <- c(1983, 1984, 1985)
+  plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985),           # Carro_HW.jpeg
+        bty="n", ylab = "Acidentes", xlab= "Ano", xaxt="n")
   lines(predict(hw_cross, 12), col="blue", lty=2)
   legend("top", inset=.05,
-         c("Real","HW_teste"), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+         c("Real","HW_teste"), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n")
+  axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
-
 
 
 ####### Cross-Validation do arima 
@@ -245,6 +242,7 @@ data.frame(cbind(EQMs, EAMs), row.names = ajuste)
 
 # Comparação pra ver a diferença nos parametros
 
+marks <- c(1983, 1984, 1985)
 
 # Alpha
 
@@ -254,27 +252,31 @@ HW_alpha_3 <- HoltWinters(carro_treino, alpha=0.5, beta=B, gamma=C, seasonal = "
 HW_alpha_4 <- HoltWinters(carro_treino, alpha=0.8, beta=B, gamma=C, seasonal = "add")
 
 {windows()
-par(mfrow = c(2,2))
+par(mfrow = c(2,2))                   # Carro_param_alpha.jpeg
 
-plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_alpha_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_alpha_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_alpha_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(800, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_alpha_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(alpha, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
 
 
@@ -289,27 +291,31 @@ HW_beta_4 <- HoltWinters(carro_treino, alpha=A, beta=0.8, gamma=C, seasonal = "a
 
 
 {windows()
-par(mfrow = c(2,2))
+par(mfrow = c(2,2))                   # Carro_param_beta.jpeg
 
-plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_beta_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_beta_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_beta_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(500, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_beta_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(beta, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
 
 
@@ -323,63 +329,32 @@ HW_gama_4 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.8, seasonal = "a
 
 
 {windows()
-par(mfrow = c(2,2))
+par(mfrow = c(2,2))                   # Carro_param_gamma.jpeg
 
-plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_gama_1, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_gama_2, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(900, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_gama_3, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 
-plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes")
+plot.ts(carro, ylim=c(1000, 2000), xlim=c(1983, 1985), bty="n", ylab="Acidentes", xlab= "Ano", xaxt="n")
 lines(predict(HW_gama_4, 12), col="blue", lty=2)
 legend("top", inset=.05,
        c("Real",expression(paste(gamma, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
-
-
-# Multiplicativo
-
-HW_gama_M_1 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.05, seasonal = "mult")
-HW_gama_M_2 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.2, seasonal = "mult")
-HW_gama_M_3 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.5, seasonal = "mult")
-HW_gama_M_4 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.8, seasonal = "mult")
-
-
-{windows()
-par(mfrow = c(2,2))
-
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
-lines(predict(HW_gama_M_1, 12), col="blue", lty=2)
-legend("top", inset=.05,
-       c("Real",expression(paste(gamma, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
-
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
-lines(predict(HW_gama_M_2, 12), col="blue", lty=2)
-legend("top", inset=.05,
-       c("Real",expression(paste(gamma, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
-
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
-lines(predict(HW_gama_M_3, 12), col="blue", lty=2)
-legend("top", inset=.05,
-       c("Real",expression(paste(gamma, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
-
-plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
-lines(predict(HW_gama_M_4, 12), col="blue", lty=2)
-legend("top", inset=.05,
-       c("Real",expression(paste(gamma, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
-}
-
-
 
 
 
@@ -403,8 +378,7 @@ for(i in 1:n){
 
 min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
-
-{plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
+{plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")    # Carro_EQM_alpha.jpeg
         legend("topleft",lty=0, c(expression(paste(beta, " = 0.01")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
 }
 
@@ -424,7 +398,7 @@ for(i in 1:n){
 
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
-{plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
+{plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")    # Carro_EQM_beta.jpeg
         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
 }
 
@@ -444,13 +418,13 @@ for(i in 1:n){
 
 min(error_c_add)                # erro minimo
 niveis[which.min(error_c_add)]  # valor que leva a esse erro
-{plot(niveis, error_c_add, xlab = expression(gamma), ylab = "EQM", bty="n")
+{plot(niveis, error_c_add, xlab = expression(gamma), ylab = "EQM", bty="n")    # Carro_EQM_gamma.jpeg
         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
 }
 
 
 
-{plot(niveis, error_a, xlab = "Parâmetro", type = "l", lty = 1, lwd = 2, col = "red",
+{plot(niveis, error_a, xlab = "Parâmetro", type = "l", lty = 1, lwd = 2, col = "red",   # Carro_EQM_todos.jpeg
      ylab = "EQM", bty="n", ylim = c(0, 450000))
 lines(niveis, error_b, lty = 2, lwd = 2, col = "blue")
 lines(niveis, error_c_add, lty = 3, lwd = 2, col = "green4")
@@ -460,6 +434,45 @@ legend("topleft",c(expression(alpha), expression(beta), expression(gamma)),
 
 
 
+######################
+
+# # Multiplicativo
+# 
+# HW_gama_M_1 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.05, seasonal = "mult")
+# HW_gama_M_2 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.2, seasonal = "mult")
+# HW_gama_M_3 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.5, seasonal = "mult")
+# HW_gama_M_4 <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=0.8, seasonal = "mult")
+# 
+# 
+# {windows()
+#   par(mfrow = c(2,2))
+#   
+#   plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
+#   lines(predict(HW_gama_M_1, 12), col="blue", lty=2)
+#   legend("top", inset=.05,
+#          c("Real",expression(paste(gamma, " = 0.05"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+#   axis(1,at=marks,labels=formatC(marks, digits = 4))
+#   
+#   plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
+#   lines(predict(HW_gama_M_2, 12), col="blue", lty=2)
+#   legend("top", inset=.05,
+#          c("Real",expression(paste(gamma, " = 0.2"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+#   axis(1,at=marks,labels=formatC(marks, digits = 4))
+#   
+#   plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
+#   lines(predict(HW_gama_M_3, 12), col="blue", lty=2)
+#   legend("top", inset=.05,
+#          c("Real",expression(paste(gamma, " = 0.5"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+#   axis(1,at=marks,labels=formatC(marks, digits = 4))
+#   
+#   plot.ts(carro, ylim=c(0, 3000), xlim=c(1983, 1985), main = "Holt Winters: Carro (Multiplicativo)", bty="n")
+#   lines(predict(HW_gama_M_4, 12), col="blue", lty=2)
+#   legend("top", inset=.05,
+#          c("Real",expression(paste(gamma, " = 0.8"))), lwd=1, lty=c(1,2), col=c("black","blue"), bty="n") 
+#   axis(1,at=marks,labels=formatC(marks, digits = 4))
+# }
+#
+#
 # # Gamma Multiplicativo
 # 
 # error_c_mult <- rep(0, n)

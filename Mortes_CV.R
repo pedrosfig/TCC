@@ -1,7 +1,7 @@
 library(datasets)
 library(forecast)
-library(stats)
-library(pastecs)
+#library(stats)
+#library(pastecs)
 
 mortes <- datasets::USAccDeaths
 plot.ts(mortes, bty="n")
@@ -181,11 +181,13 @@ EAM_prev <- sum( abs(subset(hw_pred, start = 13) - mortes_prev) )/12
 EAM_prev
 
 {
-  plot.ts(subset(mortes, start=37), ylim=c(6000, 12000), bty="n", ylab = "Mortes")
+  marks <- c(1976, 1977, 1978, 1979)
+  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_HW_mult.jpeg
+          bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
-  legend("topleft", inset=.05,
+  legend(x=1976.5,y=10800,cex = 0.9,
          c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+  axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
-
 

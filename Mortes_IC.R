@@ -1,7 +1,7 @@
 library(datasets)
 library(forecast)
-library(stats)
-library(pastecs)
+#library(stats)
+#library(pastecs)
 
 mortes <- datasets::USAccDeaths
 plot.ts(mortes, bty="n")
@@ -9,11 +9,8 @@ plot.ts(mortes, bty="n")
 # Separando dados de teste
 
 mortes_treino <- subset(mortes, end = 48)
-mortes_treino
 mortes_teste <- subset(mortes, start = 49, end = 60)
-mortes_teste
 mortes_prev <- subset(mortes, start = 61)
-mortes_prev
 
 
 A <- 0.09
@@ -36,12 +33,16 @@ EAM_HW_pred
 
 
 {
-  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
+  marks <- c(1976, 1977, 1978, 1979)
+  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_HW_add.jpeg
+          bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
   lines(subset(hw_pred, end=12), col="blue", lty=2)
   lines(subset(hw_pred, start=13), col="blue", lty=3)
   legend(x=1976.5,y=10800,cex=0.9,
-         c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+         c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n")
+  axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
+
 
 
 # Intervalo de Confiança
@@ -49,18 +50,20 @@ EAM_HW_pred
 fitted <- hw_cross$fitted[,1]  # anos de 1974 a 1976 (primeiro ano nao ajusta)
 original <- subset(mortes_treino, start = 13)
 
-erros <- fitted - original
-plot(erros, type="p")          # aparentam ser correlacionados
+erros_HW <- fitted - original
+plot(erros_HW, type="p")          # aparentam ser correlacionados
 
-qqnorm(erros, bty="n")#, main = "")
-qqline(erros)        # normalidade relativamente ok
+qqnorm(erros_HW, bty="n", main = "",           # Mortes_HW_qqplot.jpeg
+       xlab = "Quantis Teóricos",
+       ylab = "Quantis Amostrais")
+qqline(erros_HW)        # normalidade relativamente ok
 
-v <- var(erros)
+v <- var(erros_HW)
 
-e_1 <- as.vector(subset(erros, start = 2))
-e_2 <- as.vector(subset(erros, end = 35))
+e_1 <- as.vector(subset(erros_HW, start = 2))
+e_2 <- as.vector(subset(erros_HW, end = 35))
 cor(e_1,e_2)
-acf(erros)
+acf(erros_HW)
 
 # soma de nu_i^2
 
@@ -106,39 +109,12 @@ qinf_cross= ypred_cross - qnorm(.975)*arima_pred$se
 qsup_cross= ypred_cross + qnorm(.975)*arima_pred$se
 
 
-
-######## Com intervalo de confiança ##########
-{
-  plot.ts(subset(mortes, start=37), ylim=c(4000, 15000), bty="n", ylab = "Mortes")
-  lines(hw_pred, col="blue")
-  lines(hw_sup, col="blue", lty=3)
-  lines(hw_inf, col="blue", lty=3)
-  lines(arima_pred$pred, col="red")
-  lines(qinf_cross,col='red', lty=3)
-  lines(qsup_cross,col='red', lty=3)
-  legend("topleft", inset=.05,
-         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
-}
-
-
-######## Sem intervalo de confiança ##########
-{
-  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
-  lines(subset(hw_pred, end=12), col="blue", lty=2)
-  lines(subset(hw_pred, start=13),col = "blue", lty=3)
-  lines(subset(arima_pred$pred,end = 12), col="red", lty=2)
-  lines(subset(arima_pred$pred,start = 13), col="red", lty=3)
-  legend(x=1976.5,y=10800,cex=0.9,
-         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n") 
-}
-
-
-
-
 erros_arima <- arima_cross$residuals[13:48]# anos de 1974 a 1976 (primeiro ano nao ajusta)
 plot(erros_arima, type="p")          # aparentam ser não correlacionados
 
-qqnorm(erros_arima, bty="n")#, main = "")
+qqnorm(erros_arima, bty="n", main = "",           # Mortes_SARIMA_qqplot.jpeg
+       xlab = "Quantis Teóricos",
+       ylab = "Quantis Amostrais")
 qqline(erros_arima)        # normalidade relativamente ok
 
 v <- var(erros_arima)
@@ -147,4 +123,40 @@ e_1 <- as.vector(erros_arima[2:36])
 e_2 <- as.vector(erros_arima[1:35])
 cor(e_1,e_2)
 acf(erros_arima)
+
+
+
+######## Sem intervalo de confiança ##########
+{
+  marks <- c(1976, 1977, 1978, 1979)
+  plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_Prev.jpeg
+          bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
+  lines(subset(hw_pred, end=12), col="blue", lty=2)
+  lines(subset(hw_pred, start=13),col = "blue", lty=3)
+  lines(subset(arima_pred$pred,end = 12), col="red", lty=2)
+  lines(subset(arima_pred$pred,start = 13), col="red", lty=3)
+  legend(x=1976.5,y=10800,cex=0.9,
+         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n")
+  axis(1,at=marks,labels=formatC(marks, digits = 4))
+}
+
+
+######## Com intervalo de confiança ##########
+{
+  marks <- c(1976, 1977, 1978, 1979)
+  plot.ts(subset(mortes, start=37), ylim=c(4000, 15000),       #Mortes_IC.jpeg
+          bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
+  lines(hw_pred, col="blue")
+  lines(hw_sup, col="blue", lty=3)
+  lines(hw_inf, col="blue", lty=3)
+  lines(arima_pred$pred, col="red")
+  lines(qinf_cross,col='red', lty=3)
+  lines(qsup_cross,col='red', lty=3)
+  legend("topleft", inset=.05,
+         c("Real","Holt-Winters", "SARIMA"), lwd=1, lty=1, col=c("black","blue","red"), bty="n")
+  axis(1,at=marks,labels=formatC(marks, digits = 4))
+}
+
+
+
 

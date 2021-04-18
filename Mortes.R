@@ -1,11 +1,11 @@
 library(datasets)
 library(forecast)
-library(stats)
-library(pastecs)
+#library(stats)
+#library(pastecs)
 
 ?USAccDeaths
 mortes <- datasets::USAccDeaths
-plot.ts(mortes, bty="n", ylab="Mortes")
+plot.ts(mortes, bty="n", ylab="Mortes", xlab="Ano")   # Mortes.jpeg
 length(mortes)
 
 fit <- auto.arima(mortes)
@@ -155,12 +155,16 @@ EQM_Holt_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Holt_prev
 
 {
-plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
-lines(subset(hw_pred, end=12), col="blue", lty=2)
-lines(subset(hw_pred, start=13), col="blue", lty=3)
-legend(x=1976.5,y=10800,cex = 0.9,
-       c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+   marks <- c(1976, 1977, 1978, 1979)
+   plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_HW_mult.jpeg
+           bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
+   lines(subset(hw_pred, end=12), col="blue", lty=2)
+   lines(subset(hw_pred, start=13), col="blue", lty=3)
+   legend(x=1976.5,y=10800,cex = 0.9,
+          c("Real","HW_teste", "HW_prev"), lwd=1, lty=c(1,2,3), col=c("black","blue","blue"), bty="n") 
+   axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
+
 
 
 ####### Cross-Validation do arima 
@@ -207,11 +211,14 @@ EQM_Arima_prev <- sum( (subset(arima_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Arima_prev
 
 {
-   plot.ts(subset(mortes, start=37), ylim=c(7000, 10500), bty="n", ylab = "Mortes")
+   marks <- c(1976, 1977, 1978, 1979)
+   plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_SARIMA.jpeg
+           bty="n", ylab = "Mortes", xlab = "Ano", xaxt="n")
    lines(subset(arima_pred, end=12), col="red", lty=2)
    lines(subset(arima_pred, start=13), col="red", lty=3)
    legend(x = 1976.46,y=10800,cex=0.8,
           c("Real","SARIMA_teste", "SARIMA_prev"), lwd=1, lty=c(1,2,3), col=c("black","red","red"), bty="n") 
+   axis(1,at=marks,labels=formatC(marks, digits = 4))
 }
 
 
