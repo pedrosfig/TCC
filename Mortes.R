@@ -68,14 +68,20 @@ EAM_aj2 <- sum(abs(predict(aj2, 12)$pred - mortes_teste))/12
 EAM_aj3 <- sum(abs(predict(aj3, 12)$pred - mortes_teste))/12
 EAM_aj4 <- sum(abs(predict(aj4, 12)$pred - mortes_teste))/12
 EAM_aj5 <- sum(abs(predict(aj5, 12)$pred - mortes_teste))/12
- 
+
+EQMR_aj1 <- sqrt(mean((predict(aj1, 12)$pred - mortes_teste)^2/mortes_teste^2))
+EQMR_aj2 <- sqrt(mean((predict(aj2, 12)$pred - mortes_teste)^2/mortes_teste^2))
+EQMR_aj3 <- sqrt(mean((predict(aj3, 12)$pred - mortes_teste)^2/mortes_teste^2))
+EQMR_aj4 <- sqrt(mean((predict(aj4, 12)$pred - mortes_teste)^2/mortes_teste^2))
+EQMR_aj5 <- sqrt(mean((predict(aj5, 12)$pred - mortes_teste)^2/mortes_teste^2))
 
 AICs <- c(AIC(aj1),AIC(aj2),AIC(aj3),AIC(aj4),AIC(aj5))
 BICs <- c(BIC(aj1),BIC(aj2),BIC(aj3),BIC(aj4),BIC(aj5))
 EQMs <- c(EQM_aj1,EQM_aj2,EQM_aj3,EQM_aj4,EQM_aj5)
 EAMs <- c(EAM_aj1,EAM_aj2,EAM_aj3,EAM_aj4,EAM_aj5)
+EQMRs <- c(EQMR_aj1,EQMR_aj2,EQMR_aj3,EQMR_aj4,EQMR_aj5)
 ajuste <- c("aj1", "aj2", "aj3", "aj4","aj5")
-data.frame(cbind(AICs,BICs,EQMs,EAMs), row.names=ajuste)
+data.frame(cbind(AICs,BICs,EQMs,EAMs,EQMRs), row.names=ajuste)
  
 
 #podemos ver que o ajuste com menores erros é o 4 (auto.arima)
@@ -154,6 +160,9 @@ subset(hw_pred, start = 13)
 EQM_Holt_prev <- sum( (subset(hw_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Holt_prev
 
+EQMR_Holt_prev <- sqrt(mean((subset(hw_pred, start = 13) - mortes_prev)^2/mortes_prev^2))
+EQMR_Holt_prev
+  
 {
    marks <- c(1976, 1977, 1978, 1979)
    plot.ts(subset(mortes, start=37), ylim=c(7000, 10500),       # Mortes_HW_mult.jpeg
@@ -209,6 +218,10 @@ subset(arima_pred, start = 13)
 
 EQM_Arima_prev <- sum( (subset(arima_pred, start = 13) - mortes_prev)^2 )/12
 EQM_Arima_prev
+
+EQM_Arima_prev <- sqrt(mean((subset(arima_pred, start = 13) - mortes_prev)^2/mortes_prev^2))
+EQM_Arima_prev
+
 
 {
    marks <- c(1976, 1977, 1978, 1979)

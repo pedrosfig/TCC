@@ -31,8 +31,10 @@ EQM_HW_prev
 EAM_HW_pred <- sum( abs(subset(hw_pred, start = 13) - mortes_prev) )/12
 EAM_HW_pred
 
-EQMR <- mean( sqrt(((subset(hw_pred, start = 13) - mortes_prev)^2))/mortes_prev)
-EQMR
+EQMR_HW_prev <- sqrt(mean((subset(hw_pred, start = 13) - mortes_prev)^2/mortes_prev^2))
+EQMR_HW_prev
+
+
 
 {
   marks <- c(1976, 1977, 1978, 1979)
