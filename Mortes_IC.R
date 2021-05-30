@@ -31,6 +31,8 @@ EQM_HW_prev
 EAM_HW_pred <- sum( abs(subset(hw_pred, start = 13) - mortes_prev) )/12
 EAM_HW_pred
 
+EQMR <- mean( sqrt(((subset(hw_pred, start = 13) - mortes_prev)^2))/mortes_prev)
+EQMR
 
 {
   marks <- c(1976, 1977, 1978, 1979)
@@ -103,6 +105,8 @@ EQM_Arima_prev
 EAM_Arima_prev <- sum( abs(subset(arima_pred$pred, start = 13) - mortes_prev) )/12
 EAM_Arima_prev
 
+EQMR <- mean( sqrt(((subset(arima_pred$pred, start = 13) - mortes_prev)^2))/mortes_prev)
+EQMR
 
 ypred_cross = arima_pred$pred
 qinf_cross= ypred_cross - qnorm(.975)*arima_pred$se

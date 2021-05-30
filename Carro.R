@@ -371,16 +371,17 @@ error_a <- rep(0, n)
 for(i in 1:n){
         a <- niveis[i]
         hw_cross <- HoltWinters(carro_treino, alpha=a, beta=B, gamma=C, seasonal = "add")
-        EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
+        EQM <- mean( sqrt(((predict(hw_cross, 12) - carro_teste)^2))/carro_teste)
         error_a[i] <- EQM
         
 }
 
 min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
-{plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")    # Carro_EQM_alpha.jpeg
-        legend("topleft",lty=0, c(expression(paste(beta, " = 0.01")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
-}
+{plot(niveis, error_a, xlab = expression(alpha), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)    # Carro_EQM_alpha.jpeg
+        legend("top",lty=0, c(expression(paste(beta, " = 0.01")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
+abline(v=0.08,lty=2)
+        }
 
 
 
@@ -391,15 +392,16 @@ error_b <- rep(0, n)
 for(i in 1:n){
         b <- niveis[i]
         hw_cross <- HoltWinters(carro_treino, alpha=A, beta=b, gamma=C, seasonal = "add")
-        EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
+        EQM <- mean( sqrt(((predict(hw_cross, 12) - carro_teste)^2))/carro_teste)
         error_b[i] <- EQM
         
 }
 
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
-{plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")    # Carro_EQM_beta.jpeg
+{plot(niveis, error_b, xlab = expression(beta), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)    # Carro_EQM_beta.jpeg
         legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(gamma, " = 0.26"))),lwd=1, bty="n")
+abline(v=0.01,lty=2)
 }
 
 
@@ -411,21 +413,22 @@ error_c_add <- rep(0, n)
 for(i in 1:n){
         c <- niveis[i]
         hw_cross <- HoltWinters(carro_treino, alpha=A, beta=B, gamma=c, seasonal = "add")
-        EQM <- sum( (predict(hw_cross, 12) - carro_teste)^2 )/12
+        EQM <- mean( sqrt(((predict(hw_cross, 12) - carro_teste)^2))/carro_teste)
         error_c_add[i] <- EQM
         
 }
 
 min(error_c_add)                # erro minimo
 niveis[which.min(error_c_add)]  # valor que leva a esse erro
-{plot(niveis, error_c_add, xlab = expression(gamma), ylab = "EQM", bty="n")    # Carro_EQM_gamma.jpeg
-        legend("topleft",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+{plot(niveis, error_c_add, xlab = expression(gamma), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)    # Carro_EQM_gamma.jpeg
+        legend("top",lty=0, c(expression(paste(alpha, " = 0.08")), expression(paste(beta, " = 0.01"))),lwd=1, bty="n")
+abline(v=0.26,lty=2)
 }
 
 
 
 {plot(niveis, error_a, xlab = "Parâmetro", type = "l", lty = 1, lwd = 2, col = "red",   # Carro_EQM_todos.jpeg
-     ylab = "EQM", bty="n", ylim = c(0, 450000))
+     ylab = "Raiz do EQMR", bty="n", ylim = c(0, 0.5))
 lines(niveis, error_b, lty = 2, lwd = 2, col = "blue")
 lines(niveis, error_c_add, lty = 3, lwd = 2, col = "green4")
 legend("topleft",c(expression(alpha), expression(beta), expression(gamma)), 

@@ -32,7 +32,7 @@ error_a <- rep(0, n)
 for(i in 1:n){
   a <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=a, beta=B, gamma=C, seasonal = "mult")
-  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+  EQM <- mean( sqrt(((predict(hw_cross, 12) - mortes_teste)^2))/mortes_teste)
   error_a[i] <- EQM
   
 }
@@ -40,7 +40,7 @@ for(i in 1:n){
 min(error_a)                # erro minimo
 niveis[which.min(error_a)]  # valor que leva a esse erro
 
-{plot(niveis, error_a, xlab = expression(alpha), ylab = "EQM", bty="n")
+{plot(niveis, error_a, xlab = expression(alpha), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)
 legend("top",lty=0, c(expression(paste(beta, " = 0.39")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
 }
 
@@ -53,14 +53,14 @@ error_b <- rep(0, n)
 for(i in 1:n){
   b <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=b, gamma=C, seasonal = "mult")
-  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+  EQM <- mean( sqrt(((predict(hw_cross, 12) - mortes_teste)^2))/mortes_teste)
   error_b[i] <- EQM
   
 }
 
 min(error_b)                # erro minimo
 niveis[which.min(error_b)]  # valor que leva a esse erro
-{plot(niveis, error_b, xlab = expression(beta), ylab = "EQM", bty="n")
+{plot(niveis, error_b, xlab = expression(beta), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)
 legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(gamma, " = 0.80"))),lwd=1, bty="n")
 }
 
@@ -74,21 +74,21 @@ error_c_mult <- rep(0, n)
 for(i in 1:n){
   c <- niveis[i]
   hw_cross <- HoltWinters(mortes_treino, alpha=A, beta=B, gamma=c, seasonal = "mult")
-  EQM <- sum( (predict(hw_cross, 12) - mortes_teste)^2 )/12
+  EQM <- mean( sqrt(((predict(hw_cross, 12) - mortes_teste)^2))/mortes_teste)
   error_c_mult[i] <- EQM
   
 }
 
 min(error_c_mult)                # erro minimo
 niveis[which.min(error_c_mult)]  # valor que leva a esse erro
-{plot(niveis, error_c_mult, xlab = expression(gamma), ylab = "EQM", bty="n")
+{plot(niveis, error_c_mult, xlab = expression(gamma), ylab = "Raiz do EQMR", bty="n",type="l", lwd=1)
 legend("top",lty=0, c(expression(paste(alpha, " = 0.09")), expression(paste(beta, " = 0.39"))),lwd=1, bty="n")
 }
 
 
 {plot(niveis, error_a, xlab = "Parâmetro", type = "l",          # Mortes_EQM_todos.jpeg
       lty = 1, lwd = 2, col = "red",
-      ylab = "EQM", bty="n", ylim = c(0, 8000000))
+      ylab = "Raiz do EQMR", bty="n", ylim = c(0, 0.40))
   lines(niveis, error_b, lty = 2, lwd = 2, col = "blue")
   lines(niveis, error_c_add, lty = 3, lwd = 2, col = "green4")
   legend("topleft",c(expression(alpha), expression(beta), expression(gamma)), 
